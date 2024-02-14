@@ -13,4 +13,8 @@ object RouteConfig {
     const val ROUTE_FORUM = "forum"
 
     const val ROUTE_ME = "me"
+
+    const val ROUTE_LOGIN = "login"
+
+    const val ROUTE_REGISTER = "register"
 }

@@ -23,62 +23,6 @@ class CriticItem {
 
     constructor() {}
 
-    fun getId(): Int {
-        return id
-    }
-
-    fun setId(id: Int) {
-        this.id = id
-    }
-
-    fun getTitle(): String {
-        return title
-    }
-
-    fun setTitle(title: String) {
-        this.title = title
-    }
-
-    fun getContent(): String {
-        return content
-    }
-
-    fun setContent(content: String) {
-        this.content = content
-    }
-
-    fun getAuthor(): Int {
-        return author
-    }
-
-    fun setAuthor(author: Int) {
-        this.author = author
-    }
-
-    fun getAvatar(): Int {
-        return avatar
-    }
-
-    fun setAvatar(avatar: Int) {
-        this.avatar = avatar
-    }
-
-    fun getTime(): Timestamp {
-        return time
-    }
-
-    fun setTime(time: Timestamp) {
-        this.time = time
-    }
-
-    fun getForumItemId(): Int {
-        return ForumItemId
-    }
-
-    fun setForumItemId(ForumItemId: Int) {
-        this.ForumItemId = ForumItemId
-    }
-
     override fun toString(): String {
         return "CriticItem(id=$id, title=$title, content=$content, author=$author, avatar=$avatar, time=$time, ForumItemId=$ForumItemId)"
     }

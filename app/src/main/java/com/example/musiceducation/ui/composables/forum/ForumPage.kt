@@ -7,8 +7,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.musiceducation.config.RouteConfig
 import com.example.musiceducation.ui.composables.common.MusicEducationBottomBar
 import com.example.musiceducation.ui.theme.MusicEducationTheme
+import com.example.musiceducation.utils.SharedPreferencesManager
+import okhttp3.Route
 
 @Composable
 fun ForumPage(
@@ -23,7 +26,13 @@ fun ForumPage(
                     if(it == 1) return@MusicEducationBottomBar
                     when(it){
                         0 -> navController.navigate("book")
-                        2 -> navController.navigate("me")
+                        2 -> {
+                            if(SharedPreferencesManager.getToken() == ""){
+                                navController.navigate(RouteConfig.ROUTE_LOGIN)
+                            }else{
+                                navController.navigate(RouteConfig.ROUTE_ME)
+                            }
+                        }
                     }
                 })
             }

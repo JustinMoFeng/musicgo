@@ -2,18 +2,22 @@ package com.example.musiceducation.navigator
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musiceducation.config.RouteConfig
+import com.example.musiceducation.ui.composables.authenticate.LoginPage
 import com.example.musiceducation.ui.composables.book.BookCatalogPage
 import com.example.musiceducation.ui.composables.book.BookPage
 import com.example.musiceducation.ui.composables.book.BookReadPage
 import com.example.musiceducation.ui.composables.common.WebViewPage
 import com.example.musiceducation.ui.composables.forum.ForumPage
+import com.example.musiceducation.ui.composables.authenticate.RegisterPage
 import com.example.musiceducation.ui.composables.me.MePage
 import com.example.musiceducation.ui.viewModels.BookCatalogViewModel
+import com.example.musiceducation.ui.viewModels.UserViewModel
 import java.net.URLDecoder
 
 
@@ -25,6 +29,7 @@ fun MusicEducationNavHost(
 ){
 
     val bookCatalogViewModel = BookCatalogViewModel()
+    val userViewModel : UserViewModel = viewModel(factory = UserViewModel.Factory)
 
     NavHost(
         modifier = modifier,
@@ -64,6 +69,14 @@ fun MusicEducationNavHost(
             val currentPage = it.arguments?.getString("currentPage") ?: "0"
             val currentPageInt = Integer.parseInt(currentPage)
             BookCatalogPage(navController = navController, bookName = bookId, currentPage = currentPageInt,bookCatalogViewModel = bookCatalogViewModel)
+        }
+
+        composable(RouteConfig.ROUTE_REGISTER){
+            RegisterPage(userViewModel = userViewModel, navController = navController)
+        }
+
+        composable(RouteConfig.ROUTE_LOGIN){
+            LoginPage(userViewModel = userViewModel, navController = navController)
         }
     }
 

@@ -12,3 +12,5 @@ val Pink40 = Color(0xFF7D5260)
 
 val BottomBarSelected = Color(0xFFC17F56)
 val BottomBarUnselected = Color(0xFF515151)
+
+val White = Color(0xFFFFFFFF)

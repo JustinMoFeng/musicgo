@@ -35,6 +35,12 @@
       <entry key="PdfReaderPreview">
         <State />
       </entry>
+      <entry key="RegisterBodyPreview">
+        <State />
+      </entry>
+      <entry key="RegisterPagePreview">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>

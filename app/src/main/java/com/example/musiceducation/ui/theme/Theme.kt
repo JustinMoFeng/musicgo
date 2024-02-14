@@ -19,7 +19,7 @@ private val DarkColorScheme = darkColorScheme(
     primary = BottomBarSelected,
     onPrimary = BottomBarUnselected,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = White
 
 )
 
@@ -27,7 +27,7 @@ private val LightColorScheme = lightColorScheme(
     primary = BottomBarSelected,
     onPrimary = BottomBarUnselected,
     secondary = PurpleGrey40,
-    tertiary = Pink40
+    tertiary = White
 
 
     /* Other default colors to override

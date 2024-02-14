@@ -33,6 +33,7 @@ import com.example.musiceducation.config.RouteConfig
 import com.example.musiceducation.ui.composables.common.MusicEducationBasicTopBar
 import com.example.musiceducation.ui.composables.common.MusicEducationBottomBar
 import com.example.musiceducation.ui.theme.MusicEducationTheme
+import com.example.musiceducation.utils.SharedPreferencesManager
 
 @Composable
 fun BookPage(
@@ -46,7 +47,15 @@ fun BookPage(
                     if(it == 0) return@MusicEducationBottomBar
                     when(it){
                         1 -> navController.navigate(RouteConfig.ROUTE_FORUM)
-                        2 -> navController.navigate(RouteConfig.ROUTE_ME)
+                        2 -> {
+                            if(SharedPreferencesManager.getToken()==""){
+                                navController.navigate(RouteConfig.ROUTE_LOGIN)
+
+                            }else{
+                                navController.navigate(RouteConfig.ROUTE_ME)
+                            }
+
+                        }
                     }
                 })
             },
