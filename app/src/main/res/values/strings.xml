@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MusicEducation</string>
+    <string name="bottombar_book">书籍</string>
+    <string name="bottombar_forum">论坛</string>
+    <string name="bottombar_me">我的</string>
 </resources>
