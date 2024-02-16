@@ -1,5 +1,6 @@
 package com.music.education.Controller;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.music.education.Entity.Result;
 import com.music.education.Entity.User;
 import com.music.education.Service.UserService;
@@ -45,6 +46,27 @@ public class UserController {
         String token = JwtUtils.generateJwt(map);
         return Result.success("登录成功",token);
 
+    }
+
+    @GetMapping("/myInfo")
+    public Result getMyInfo(@RequestHeader("me_token") String token){
+        System.out.println(token);
+        Map<String, Object> map = JwtUtils.parseJwt(token);
+        if(map == null){
+            return Result.error("token无效");
+        }
+        User user = userService.getUserById((Integer) map.get("id"));
+        JSONObject res = new JSONObject();
+        res.put("id", user.getId());
+        res.put("username", user.getUsername());
+        res.put("nickname", user.getNickname());
+        res.put("password","");
+        if(user.getAvatar_url() != null) {
+            res.put("avatar_url", user.getAvatar_url());
+        }else {
+            res.put("avatar_url", "");
+        }
+        return Result.success("获取成功",res.toString());
     }
 
 

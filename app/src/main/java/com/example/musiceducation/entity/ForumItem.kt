@@ -1,39 +1,43 @@
 package com.example.musiceducation.entity
 
-import com.example.musiceducation.ui.composables.common.Directory
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class ForumItem {
-    var id: Int = 0
-    var title: String = ""
-    var content: String = ""
-    var bookLink: List<Directory> = emptyList()
-    var externalURILink: List<String> = emptyList()
-    var externalFileLink: List<String> = emptyList()
-    var author: Int = 0
-    var avatar: Int = 0
-    var time: Timestamp = Timestamp(System.currentTimeMillis())
-    var type: Int = 0 // 0 代表了普通帖子，1 代表了书籍帖子，2 代表了外部链接帖子，3 代表了手动上传文件的帖子
 
-    constructor(id: Int, title: String, content: String, author: Int, avatar: Int, time: Timestamp, type: Int = 0) {
-        this.id = id
-        this.title = title
-        this.content = content
-        this.author = author
-        this.avatar = avatar
-        this.time = time
-        this.type = type
+@Serializable
+class ForumItem (
+    val id: Int,
+    val title: String,
+    val content: String,
+    val author: String,
+    @SerialName("time") // Use SerialName to map to the correct JSON field name
+    @Serializable(with = TimestampSerializer::class)
+    val time: Timestamp,
+    val reply: Int,
+    val like: Int,
+    val type: Int
+)
+
+@Serializer(forClass = Timestamp::class)
+object TimestampSerializer : KSerializer<Timestamp> {
+    // Adjust the format based on the timestamp format in your data
+    private val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+
+    override fun deserialize(decoder: Decoder): Timestamp {
+        val timestampString = decoder.decodeString()
+        val date = format.parse(timestampString)
+        return Timestamp(date.time)
     }
 
-
-
-
-
-    constructor() {}
-
-    override fun toString(): String {
-        return "Forumitem(id=$id, title='$title', content='$content', author='$author', avatar=$avatar, time='$time')"
+    override fun serialize(encoder: Encoder, value: Timestamp) {
+        val timestampString = format.format(value)
+        encoder.encodeString(timestampString)
     }
-
-
 }

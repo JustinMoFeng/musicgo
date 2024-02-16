@@ -30,7 +30,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
 
         // 获取请求头中的token
-        String token = request.getHeader("mytoken");
+        String token = request.getHeader("me_token");
         log.info("请求头中的token为：{}", token);
 
         // 判断token是否为空

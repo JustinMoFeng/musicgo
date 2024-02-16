@@ -12,7 +12,10 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.musiceducation.MusicEducationApplication
 import com.example.musiceducation.data.UserRepository
+import com.example.musiceducation.entity.User
+import com.example.musiceducation.utils.SharedPreferencesManager
 import kotlinx.coroutines.launch
+import kotlin.reflect.typeOf
 
 class UserViewModel(
     private val authenticateRepository: UserRepository
@@ -27,9 +30,10 @@ class UserViewModel(
     var registerState by mutableStateOf("")
     var loginState by mutableStateOf("")
 
-    var user_name by mutableStateOf("墨枫")
-    var user_nickname by mutableStateOf("墨枫逸尘")
-    var user_avatar by mutableStateOf("https://c-ssl.dtstatic.com/uploads/blog/202307/16/wgSqQXmVs9bM5zE.thumb.400_0.jpeg")
+    var user_name by mutableStateOf("")
+    var user_nickname by mutableStateOf("尚未登录")
+    var user_avatar by mutableStateOf("")
+    var user_request_info by mutableStateOf("")
 
     fun register(){
         viewModelScope.launch {
@@ -44,6 +48,29 @@ class UserViewModel(
             val string = authenticateRepository.login(login_name, login_password)
             Log.d("UserViewModel", "login: $string")
             loginState = string
+        }
+    }
+
+    fun logout(){
+        SharedPreferencesManager.deleteToken()
+        user_name = ""
+        user_nickname = "尚未登录"
+        user_avatar = ""
+    }
+
+    fun getUserInfo(){
+        viewModelScope.launch {
+            val user = authenticateRepository.getUserInfo()
+            Log.d("UserViewModel", "getUserInfo: $user")
+            // 判断user的类型是不是User
+            // user 可能是User，也可能是String
+            if (user is User){
+                user_name = user.username
+                user_nickname = user.nickname
+                user_avatar = user.avatar_url
+            }else if(user is String){
+                user_request_info = user
+            }
         }
     }
 

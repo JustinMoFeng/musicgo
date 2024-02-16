@@ -7,6 +7,7 @@ import com.example.musiceducation.network.UserApiService
 interface UserRepository {
     suspend fun register(username: String, password: String, nickname: String):String
     suspend fun login(username: String, password: String):String
+    suspend fun getUserInfo(): Any
 }
 class NetworkUserRepository(
     private val authenticateApiService: AuthenticateApiService,
@@ -18,6 +19,10 @@ class NetworkUserRepository(
 
     override suspend fun login(username: String, password: String):String {
         return authenticateApiService.login(username, password)
+    }
+
+    override suspend fun getUserInfo(): Any {
+        return userApiService.getUserInfo()
     }
 
 

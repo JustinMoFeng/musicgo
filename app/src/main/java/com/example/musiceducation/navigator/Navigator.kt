@@ -41,7 +41,7 @@ fun MusicEducationNavHost(
         }
 
         composable(RouteConfig.ROUTE_ME){
-            MePage(navController = navController)
+            MePage(navController = navController, userViewModel = userViewModel)
         }
 
         composable(RouteConfig.ROUTE_FORUM){

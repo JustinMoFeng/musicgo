@@ -12,11 +12,11 @@ interface AppContainer {
 
 class DefaultAppContainer : AppContainer {
     companion object{
-        private const val BASE_URL = "http://192.168.1.6:8080"
+        private const val BASE_URL = "http://192.168.2.102:8080"
     }
 
     override val baseUrl: String
-        get() = "http://192.168.1.6:8080"
+        get() = "http://192.168.2.102:8080"
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
@@ -36,7 +36,7 @@ class DefaultAppContainer : AppContainer {
     }
 
     private val userApiService: UserApiService by lazy {
-        UserApiService(BASE_URL, okHttpClient)
+        UserApiService(url = BASE_URL, okHttpClient = okHttpClient)
     }
 
     override val userRepository: UserRepository by lazy {

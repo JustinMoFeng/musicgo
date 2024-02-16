@@ -19,14 +19,14 @@ object SharedPreferencesManager {
     }
 
     fun saveToken(token: String) {
-        sharedPreferences.edit().putString("wr_token", token).apply()
+        sharedPreferences.edit().putString("me_token", token).apply()
     }
 
     fun getToken(): String? {
-        return sharedPreferences.getString("wr_token", "")
+        return sharedPreferences.getString("me_token", "")
     }
 
     fun deleteToken() {
-        sharedPreferences.edit().remove("wr_token").apply()
+        sharedPreferences.edit().remove("me_token").apply()
     }
 }
