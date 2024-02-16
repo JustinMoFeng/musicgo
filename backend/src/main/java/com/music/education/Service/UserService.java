@@ -6,4 +6,6 @@ public interface UserService {
     int addUser(User user);
 
     boolean checkUser(User user);
+
+    User getUserByUsername(String username);
 }

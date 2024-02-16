@@ -27,6 +27,10 @@ class UserViewModel(
     var registerState by mutableStateOf("")
     var loginState by mutableStateOf("")
 
+    var user_name by mutableStateOf("墨枫")
+    var user_nickname by mutableStateOf("墨枫逸尘")
+    var user_avatar by mutableStateOf("https://c-ssl.dtstatic.com/uploads/blog/202307/16/wgSqQXmVs9bM5zE.thumb.400_0.jpeg")
+
     fun register(){
         viewModelScope.launch {
             val string = authenticateRepository.register(register_name, register_password, register_nickname)
@@ -36,7 +40,11 @@ class UserViewModel(
     }
 
     fun login(){
-        loginState = "login"
+        viewModelScope.launch {
+            val string = authenticateRepository.login(login_name, login_password)
+            Log.d("UserViewModel", "login: $string")
+            loginState = string
+        }
     }
 
     companion object {

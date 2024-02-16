@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
         return trueUser != null && trueUser.getPassword().equals(user.getPassword());
     }
 
+    @Override
     public User getUserByUsername(String username) {
         return userMapper.getUserByUsername(username);
     }

@@ -3,8 +3,8 @@ package com.example.musiceducation.entity
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FinalResult (
+data class ErrorResult (
     val code: Int,
-    val msg: String,
+    val message: String,
     val data: String
 )
