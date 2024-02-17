@@ -25,7 +25,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         log.info("请求的url路径为：{}", requestURI);
 
         // 放行登录与注册请求
-        if (requestURI.contains("/login")||requestURI.contains("/register")) {
+        if (requestURI.contains("/login")||requestURI.contains("/register")||requestURI.contains("/images")) {
             return true;
         }
 

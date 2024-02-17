@@ -2,34 +2,36 @@ package com.music.education.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ForumItem {
+public class ResponseForumItem {
     private int id;
     private String title;
     private String content;
-    private int author;
+    private String author_name;
+    private String author_avatar;
     private Timestamp time;
-    private int reply_num;
-    private int like_num;
+    private int reply;
+    private int like;
     private int type;
 
     @Override
     public String toString() {
-        return "ForumItem{" +
+        return "ResponseForumItem{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", author=" + author +
+                ", author_name='" + author_name + '\'' +
+                ", author_avatar='" + author_avatar + '\'' +
                 ", time=" + time +
-                ", reply_num=" + reply_num +
-                ", like_num=" + like_num +
+                ", reply=" + reply +
+                ", like=" + like +
                 ", type=" + type +
                 '}';
     }

@@ -16,28 +16,26 @@ class ForumItem (
     val id: Int,
     val title: String,
     val content: String,
-    val author: String,
+    val author_name: String,
+    val author_avatar: String,
     @SerialName("time") // Use SerialName to map to the correct JSON field name
     @Serializable(with = TimestampSerializer::class)
-    val time: Timestamp,
+    @JsonPrimitive
+    val time: Long,
     val reply: Int,
     val like: Int,
-    val type: Int
+    val type: Int,
 )
 
-@Serializer(forClass = Timestamp::class)
-object TimestampSerializer : KSerializer<Timestamp> {
-    // Adjust the format based on the timestamp format in your data
-    private val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+annotation class JsonPrimitive
 
-    override fun deserialize(decoder: Decoder): Timestamp {
-        val timestampString = decoder.decodeString()
-        val date = format.parse(timestampString)
-        return Timestamp(date.time)
+@Serializer(forClass = Long::class)
+object TimestampSerializer : KSerializer<Long> {
+    override fun deserialize(decoder: Decoder): Long {
+        return decoder.decodeLong()
     }
 
-    override fun serialize(encoder: Encoder, value: Timestamp) {
-        val timestampString = format.format(value)
-        encoder.encodeString(timestampString)
+    override fun serialize(encoder: Encoder, value: Long) {
+        encoder.encodeLong(value)
     }
 }

@@ -15,8 +15,10 @@ import com.example.musiceducation.ui.composables.book.BookReadPage
 import com.example.musiceducation.ui.composables.common.WebViewPage
 import com.example.musiceducation.ui.composables.forum.ForumPage
 import com.example.musiceducation.ui.composables.authenticate.RegisterPage
+import com.example.musiceducation.ui.composables.forum.ForumDetailPage
 import com.example.musiceducation.ui.composables.me.MePage
 import com.example.musiceducation.ui.viewModels.BookCatalogViewModel
+import com.example.musiceducation.ui.viewModels.ForumViewModel
 import com.example.musiceducation.ui.viewModels.UserViewModel
 import java.net.URLDecoder
 
@@ -30,6 +32,7 @@ fun MusicEducationNavHost(
 
     val bookCatalogViewModel = BookCatalogViewModel()
     val userViewModel : UserViewModel = viewModel(factory = UserViewModel.Factory)
+    val forumViewModel : ForumViewModel = viewModel(factory = ForumViewModel.Factory)
 
     NavHost(
         modifier = modifier,
@@ -45,7 +48,7 @@ fun MusicEducationNavHost(
         }
 
         composable(RouteConfig.ROUTE_FORUM){
-            ForumPage(navController = navController)
+            ForumPage(navController = navController, forumViewModel = forumViewModel)
         }
 
         composable(RouteConfig.ROUTE_BOOK_READ+"/{bookId}/{pageIndex}"){
@@ -77,6 +80,12 @@ fun MusicEducationNavHost(
 
         composable(RouteConfig.ROUTE_LOGIN){
             LoginPage(userViewModel = userViewModel, navController = navController)
+        }
+
+        composable(RouteConfig.ROUTE_FORUM_DETAIL+"/{forumId}"){
+            val forumId = it.arguments?.getString("forumId") ?: ""
+            val forumIdInt = Integer.parseInt(forumId)
+            ForumDetailPage(navController = navController, forumId = forumIdInt)
         }
     }
 

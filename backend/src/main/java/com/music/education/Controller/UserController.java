@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping("/register")
     public Result register(@RequestBody User user){
-
+        user.setAvatar_url("");
         int num = userService.addUser(user);
         if(num > 0){
             return Result.success("注册成功","null");
