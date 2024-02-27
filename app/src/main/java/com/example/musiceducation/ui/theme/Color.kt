@@ -14,3 +14,7 @@ val BottomBarSelected = Color(0xFFC17F56)
 val BottomBarUnselected = Color(0xFF515151)
 
 val White = Color(0xFFFFFFFF)
+
+val Snow = Color(0xFFFFFAFA)
+
+val backOut = Color(0xFFED5152)

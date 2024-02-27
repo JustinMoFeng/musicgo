@@ -4,12 +4,17 @@ import com.alibaba.fastjson2.JSONObject;
 import com.music.education.Entity.Result;
 import com.music.education.Entity.User;
 import com.music.education.Service.UserService;
+import com.music.education.Utils.FileUtils;
 import com.music.education.Utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -67,6 +72,52 @@ public class UserController {
             res.put("avatar_url", "");
         }
         return Result.success("获取成功",res.toString());
+    }
+
+    @PostMapping("/updateInfoWithoutAvatar")
+    public Result updateInfo(@RequestHeader("me_token") String token, @RequestBody User user){
+        Map<String, Object> map = JwtUtils.parseJwt(token);
+        if(map == null){
+            return Result.error("token无效");
+        }
+        user.setId((Integer) map.get("id"));
+        int num = userService.updateUser(user);
+        if(num > 0){
+            return Result.success("修改成功","null");
+        }else{
+            return Result.error("修改失败");
+        }
+    }
+
+    @PostMapping("/updateAvatar")
+    @Transactional
+    public Result updateAvatar(@RequestHeader("me_token") String token, @RequestParam("avatar") MultipartFile avatar) throws IOException {
+        Map<String, Object> map = JwtUtils.parseJwt(token);
+        if(map == null){
+            return Result.error("token无效");
+        }
+        User user = new User();
+        user.setId((Integer) map.get("id"));
+        // 上传头像
+        String filePath = "C:\\Users\\ROG\\Desktop\\images\\";
+        String fileName = UUID.randomUUID() +"&"+ avatar.getOriginalFilename();
+        // 获取文件类型
+        try{
+            FileUtils.uploadFile(avatar.getBytes(), filePath, fileName);
+            user.setAvatar_url("http://192.168.1.6/images/"+fileName);
+            int num = userService.updateUserAvatar(user);
+            if(num > 0){
+                return Result.success("修改成功","null");
+            }else{
+                return Result.error("修改失败");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.error("上传失败");
+        }
+
+
     }
 
 

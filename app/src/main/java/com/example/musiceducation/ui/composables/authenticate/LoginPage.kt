@@ -241,31 +241,53 @@ fun LoginBody(modifier: Modifier, authenticateViewModel: UserViewModel, onGoToRe
             if(authenticateViewModel.loginState!=""&&authenticateViewModel.loginState!="true") {
                 AlertDialog(
                     onDismissRequest = { authenticateViewModel.loginState = "" },
-                    title = { Text("提示") },
-                    text = { Text(authenticateViewModel.loginState) },
+                    title = {
+                        Text(
+                            text = "登录失败通知",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Black
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = authenticateViewModel.loginState,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Black
+                        )
+                    },
+                    containerColor = Color.LightGray,
                     confirmButton = {
                         Button(
                             onClick = {
+                                if(authenticateViewModel.loginState=="用户名不存在"){
+                                    onGoToRegister()
+                                }
                                 authenticateViewModel.loginState = ""
-                                onGoToRegister()
+
                             },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary,
-                                contentColor = MaterialTheme.colorScheme.primary
-                            )
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.primary)
                         ) {
-                            Text("确定", color = MaterialTheme.colorScheme.primary)
+                            Text(
+                                text = "确认",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.White
+                            )
                         }
                     },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    textContentColor = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.onSecondary,
-                            shape = RoundedCornerShape(10.dp)
-                        )
+                    dismissButton = {
+                        Button(
+                            onClick = { authenticateViewModel.loginState = "" },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.primary)
+                        ) {
+                            Text(
+                                text = "取消",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.White
+                            )
+                        }
+                    }
                 )
             }else if(authenticateViewModel.loginState=="true"){
                 authenticateViewModel.loginState = ""

@@ -253,8 +253,8 @@ fun RegisterBody(modifier: Modifier, authenticateViewModel: UserViewModel, onGoT
             if(authenticateViewModel.registerState=="true") {
                 AlertDialog(
                     onDismissRequest = { showFailureDialog = false },
-                    title = { Text("提示") },
-                    text = { Text("注册成功") },
+                    title = { Text("提示", color = Color.Black) },
+                    text = { Text("注册成功",color = Color.Black) },
                     confirmButton = {
                         Button(
                             onClick = {
@@ -263,16 +263,13 @@ fun RegisterBody(modifier: Modifier, authenticateViewModel: UserViewModel, onGoT
                                 onGoToLogin()
                             },
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary,
-                                contentColor = MaterialTheme.colorScheme.primary
+                                containerColor = MaterialTheme.colorScheme.primary,
                             )
                         ) {
-                            Text("确定", color = MaterialTheme.colorScheme.primary)
+                            Text("确定", color = Color.White)
                         }
                     },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    textContentColor = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(10.dp),
+                    containerColor = Color.LightGray,
                     modifier = Modifier
                         .border(
                             width = 1.dp,
@@ -283,8 +280,8 @@ fun RegisterBody(modifier: Modifier, authenticateViewModel: UserViewModel, onGoT
             }else if(authenticateViewModel.registerState!=""){
                 AlertDialog(
                     onDismissRequest = { showFailureDialog = false },
-                    title = { Text("提示") },
-                    text = { Text(authenticateViewModel.registerState) },
+                    title = { Text("提示",color = Color.Black) },
+                    text = { Text(authenticateViewModel.registerState,color=Color.Black) },
                     confirmButton = {
                         Button(
                             onClick = {
@@ -292,15 +289,13 @@ fun RegisterBody(modifier: Modifier, authenticateViewModel: UserViewModel, onGoT
                                 showFailureDialog = false
                             },
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary,
-                                contentColor = MaterialTheme.colorScheme.primary
+                                containerColor = MaterialTheme.colorScheme.primary,
                             )
                         ) {
-                            Text("确定", color = MaterialTheme.colorScheme.primary)
+                            Text("确定", color = Color.White)
                         }
                     },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    textContentColor = MaterialTheme.colorScheme.primary,
+                    containerColor = Color.LightGray,
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .border(

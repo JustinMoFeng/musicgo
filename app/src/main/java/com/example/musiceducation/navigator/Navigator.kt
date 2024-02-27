@@ -15,7 +15,9 @@ import com.example.musiceducation.ui.composables.book.BookReadPage
 import com.example.musiceducation.ui.composables.common.WebViewPage
 import com.example.musiceducation.ui.composables.forum.ForumPage
 import com.example.musiceducation.ui.composables.authenticate.RegisterPage
+import com.example.musiceducation.ui.composables.forum.ForumAddPage
 import com.example.musiceducation.ui.composables.forum.ForumDetailPage
+import com.example.musiceducation.ui.composables.me.MeDetailPage
 import com.example.musiceducation.ui.composables.me.MePage
 import com.example.musiceducation.ui.viewModels.BookCatalogViewModel
 import com.example.musiceducation.ui.viewModels.ForumViewModel
@@ -85,7 +87,15 @@ fun MusicEducationNavHost(
         composable(RouteConfig.ROUTE_FORUM_DETAIL+"/{forumId}"){
             val forumId = it.arguments?.getString("forumId") ?: ""
             val forumIdInt = Integer.parseInt(forumId)
-            ForumDetailPage(navController = navController, forumId = forumIdInt)
+            ForumDetailPage(navController = navController, forumId = forumIdInt, forumViewModel = forumViewModel)
+        }
+
+        composable(RouteConfig.ROUTE_FORUM_ADD){
+            ForumAddPage(navController = navController, forumViewModel = forumViewModel)
+        }
+
+        composable(RouteConfig.ROUTE_USER_INFO){
+            MeDetailPage(viewModel = userViewModel, navController = navController)
         }
     }
 

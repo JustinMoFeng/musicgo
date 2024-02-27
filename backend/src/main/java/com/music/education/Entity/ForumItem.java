@@ -18,7 +18,7 @@ public class ForumItem {
     private Timestamp time;
     private int reply_num;
     private int like_num;
-    private int type;
+    private String book_link;
 
     @Override
     public String toString() {
@@ -30,7 +30,7 @@ public class ForumItem {
                 ", time=" + time +
                 ", reply_num=" + reply_num +
                 ", like_num=" + like_num +
-                ", type=" + type +
+                ", book_link=" + book_link +
                 '}';
     }
 }

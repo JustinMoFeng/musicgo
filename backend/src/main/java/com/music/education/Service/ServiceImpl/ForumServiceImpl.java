@@ -25,6 +25,12 @@ public class ForumServiceImpl implements ForumService {
     @Transactional
     public List<ResponseForumItem> getForumItem() {
         List<ResponseForumItem> forumList = forumMapper.getForumItem();
+        for (ResponseForumItem forumItem : forumList) {
+            if (forumItem.getAuthor_avatar()==null || forumItem.getAuthor_avatar().equals("")) {
+                forumItem.setAuthor_avatar("");
+            }
+        }
+
         return forumList;
     }
 
@@ -44,6 +50,11 @@ public class ForumServiceImpl implements ForumService {
             forumItem.setAdditionalList(additionalList);
         }
         List<ResponseForumItemCritic> criticList = forumMapper.getForumCriticById(id);
+        for(ResponseForumItemCritic critic : criticList){
+            if(critic.getCritic_author_avatar()==null || critic.getCritic_author_avatar().equals("")){
+                critic.setCritic_author_avatar("");
+            }
+        }
         if(criticList==null || criticList.isEmpty()){
             forumItem.setCriticList(new ArrayList<ResponseForumItemCritic>());
         }else {
@@ -55,5 +66,15 @@ public class ForumServiceImpl implements ForumService {
     @Override
     public int addForumCritic(ForumItemCritic forumCritic) {
         return forumMapper.addForumCritic(forumCritic);
+    }
+
+    @Override
+    public List<ResponseForumItem> getMyForumItem(Integer id) {
+        return forumMapper.getMyForumItem(id);
+    }
+
+    @Override
+    public void updateReplyNum(int forumItemId) {
+        forumMapper.updateReplyNum(forumItemId);
     }
 }

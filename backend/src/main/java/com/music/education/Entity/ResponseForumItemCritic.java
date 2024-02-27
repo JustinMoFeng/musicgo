@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +16,7 @@ public class ResponseForumItemCritic {
     private String critic_author_name;
     private String critic_author_avatar;
     private String critic_content;
-    private String critic_time;
+    private Timestamp critic_time;
 
 
 }

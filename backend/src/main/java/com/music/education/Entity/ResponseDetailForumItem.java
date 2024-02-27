@@ -19,10 +19,10 @@ public class ResponseDetailForumItem {
     private Timestamp time;
     private int reply;
     private int like;
-    private int type;
     private List<ForumItemAdditional> additionalList;
 
     private List<ResponseForumItemCritic> criticList;
+    private String book_link;
 
     @Override
     public String toString() {
@@ -35,7 +35,6 @@ public class ResponseDetailForumItem {
                 ", time=" + time +
                 ", reply=" + reply +
                 ", like=" + like +
-                ", type=" + type +
                 ", additionalList=" + additionalList +
                 ", criticList=" + criticList +
                 '}';

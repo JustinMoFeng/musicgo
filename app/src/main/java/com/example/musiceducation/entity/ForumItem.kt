@@ -17,14 +17,13 @@ class ForumItem (
     val title: String,
     val content: String,
     val author_name: String,
-    val author_avatar: String,
+    val author_avatar: String?,
     @SerialName("time") // Use SerialName to map to the correct JSON field name
     @Serializable(with = TimestampSerializer::class)
     @JsonPrimitive
     val time: Long,
-    val reply: Int,
-    val like: Int,
-    val type: Int,
+    val reply_num: Int,
+    val like_num: Int
 )
 
 annotation class JsonPrimitive

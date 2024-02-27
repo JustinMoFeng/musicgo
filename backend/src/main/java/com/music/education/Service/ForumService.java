@@ -18,4 +18,8 @@ public interface ForumService {
     ResponseDetailForumItem getForumItemById(int id);
 
     int addForumCritic(ForumItemCritic forumCritic);
+
+    List<ResponseForumItem> getMyForumItem(Integer id);
+
+    void updateReplyNum(int forumItemId);
 }

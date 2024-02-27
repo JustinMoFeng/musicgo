@@ -39,9 +39,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.musiceducation.R
+import com.example.musiceducation.config.RouteConfig
 import com.example.musiceducation.data.NetworkUserRepository
 import com.example.musiceducation.data.UserRepository
 import com.example.musiceducation.network.AuthenticateApiService
@@ -71,6 +73,54 @@ fun MePage(
             }
         }
 
+        if(userViewModel.user_request_info != ""){
+            AlertDialog(
+                onDismissRequest = { userViewModel.user_request_info = "" },
+                title = {
+                        Text(
+                            text = "请求失败通知",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Black
+                        )
+                },
+                containerColor = Color.LightGray,
+                text = {
+                        Text(
+                            text = userViewModel.user_request_info,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Black
+                        )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            if(userViewModel.user_request_info == "尚未登录,禁止请求"||userViewModel.user_request_info == "登录失效,请重新登录"){
+                                navController.navigate(RouteConfig.ROUTE_LOGIN)
+                            }
+                            userViewModel.user_request_info = ""
+                        }
+                    ) {
+                        Text(
+                            text = "确认",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.White
+                        )
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = { userViewModel.user_request_info = "" }
+                    ) {
+                        Text(
+                            text = "取消",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.White
+                        )
+                    }
+                }
+            )
+        }
+
         Scaffold(
             bottomBar = {
                 MusicEducationBottomBar(selectedIndex = 2, onSelected = {
@@ -93,7 +143,7 @@ fun MePage(
                     .background(Color.White)
                     .padding(it)
             ) {
-                MePageUserPart(userViewModel = userViewModel)
+                MePageUserPart(userViewModel = userViewModel, navController = navController)
                 MePageBodyPart(userViewModel = userViewModel)
             }
         }
@@ -104,7 +154,8 @@ fun MePage(
 @Composable
 fun MePageUserPart(
     modifier: Modifier = Modifier,
-    userViewModel: UserViewModel = UserViewModel(NetworkUserRepository(AuthenticateApiService("", OkHttpClient()), UserApiService("", OkHttpClient())))
+    userViewModel: UserViewModel = UserViewModel(NetworkUserRepository(AuthenticateApiService("", OkHttpClient()), UserApiService("", OkHttpClient()))),
+    navController: NavController
 ) {
     MusicEducationTheme {
         Row(
@@ -164,6 +215,9 @@ fun MePageUserPart(
                 modifier = Modifier
                     .size(24.dp)
                     .clip(shape = CircleShape)
+                    .clickable {
+                        navController.navigate(RouteConfig.ROUTE_USER_INFO)
+                    }
             )
 
             Spacer(modifier = Modifier.width(15.dp))
@@ -189,37 +243,37 @@ fun MePageBodyPart(
                 .background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(50.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Spacer(modifier = Modifier.width(4.dp))
-
-                    Text(
-                        text = "我的帖子",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.Black,
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Image(
-                        painter = painterResource(id = R.drawable.right_arrow),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(15.dp)
-                            .clip(shape = CircleShape)
-
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                }
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth(0.9f)
+//                    .height(50.dp)
+//            ) {
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(48.dp),
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Spacer(modifier = Modifier.width(4.dp))
+//
+//                    Text(
+//                        text = "我的帖子",
+//                        style = MaterialTheme.typography.titleMedium,
+//                        color = Color.Black,
+//                    )
+//
+//                    Spacer(modifier = Modifier.weight(1f))
+//
+//                    Image(
+//                        painter = painterResource(id = R.drawable.right_arrow),
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .size(15.dp)
+//                            .clip(shape = CircleShape)
+//
+//                    )
+//                    Spacer(modifier = Modifier.width(4.dp))
+//                }
 
                 Spacer(modifier = Modifier
                     .height(1.dp)
@@ -227,17 +281,17 @@ fun MePageBodyPart(
                     .fillMaxWidth()
                 )
 
-            }
+//            }
 
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Box(modifier = Modifier
                 .height(40.dp)
                 .fillMaxWidth(0.8f)
                 .clickable { logOutConfirm = true }
                 .background(
-                    MaterialTheme.colorScheme.primary,
+                    MaterialTheme.colorScheme.onSecondary,
                     shape = MaterialTheme.shapes.medium
                 ),
                 contentAlignment = Alignment.Center
@@ -268,28 +322,31 @@ fun MePageBodyPart(
                             color = Color.White
                         )
                     },
+                    containerColor = Color.LightGray,
                     confirmButton = {
                         Button(
                             onClick = {
                                 logOutConfirm = false
                                 userViewModel.logout()
-                            }
+                            },
+                            modifier = Modifier.background(MaterialTheme.colorScheme.primary)
                         ) {
                             Text(
                                 text = "确认",
                                 style = MaterialTheme.typography.titleMedium,
-                                color = Color.Black
+                                color = Color.White
                             )
                         }
                     },
                     dismissButton = {
                         Button(
-                            onClick = { logOutConfirm = false }
+                            onClick = { logOutConfirm = false },
+                            modifier = Modifier.background(MaterialTheme.colorScheme.primary)
                         ) {
                             Text(
                                 text = "取消",
                                 style = MaterialTheme.typography.titleMedium,
-                                color = Color.Black
+                                color = Color.White
                             )
                         }
                     }
@@ -309,7 +366,7 @@ fun MePageBodyPart(
 @Preview
 @Composable
 fun MePageUserPartPreview() {
-    MePageUserPart()
+    MePageUserPart(navController = rememberNavController())
 }
 
 @Preview

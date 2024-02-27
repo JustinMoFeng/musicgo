@@ -27,11 +27,14 @@ public class ForumController {
 
     @PostMapping("/add")
     @Transactional
-    public Result addForumItem(@RequestParam("forumBody") String forumItemString, @RequestHeader("me_token") String token, @RequestParam("forumFile") List<MultipartFile> files) throws IOException {
+    public Result addForumItem(@RequestParam("forumBody") String forumItemString, @RequestHeader("me_token") String token, @RequestParam(value = "forumFile", required = false) List<MultipartFile> files) {
+        System.out.println(forumItemString);
 
         List<ForumItemAdditional> additionalList = new ArrayList<>();
 
         ForumItem forumItem = JSONObject.parseObject(forumItemString, ForumItem.class);
+
+
 
         Map<String, Object> map = JwtUtils.parseJwt(token);
         if(map == null){
@@ -41,24 +44,36 @@ public class ForumController {
         forumItem.setReply_num(0);
         forumItem.setLike_num(0);
         forumItem.setTime(new Timestamp(System.currentTimeMillis()));
-        try{
+
+
+
+
             int num = forumService.addForumItem(forumItem);
-            String filePath = "C:\\Users\\ROG\\Desktop\\images\\";
+            String filePath = "C:\\Users\\Administrator\\Desktop\\images\\";
             if(num > 0){
                 int id = forumItem.getId();
-                for(MultipartFile file : files){
-                    ForumItemAdditional additional = new ForumItemAdditional();
-                    String fileName = UUID.randomUUID() +"&"+ file.getOriginalFilename();
-                    // 获取文件类型
-                    String fileType = fileName.substring(fileName.lastIndexOf("."));
-                    FileUtils.uploadFile(file.getBytes(), filePath, fileName);
-                    additional.setForum_item_id(id);
-                    additional.setFile_name(fileName);
-                    additional.setFile_type(fileType);
-                    additional.setIs_delete(false);
-                    additional.setFile_url("http://localhost:8080/images/"+fileName);
-                    additionalList.add(additional);
+                if(files!=null&&!files.isEmpty()){
+                    try{
+                        for(MultipartFile file : files){
+                            System.out.println(file.toString());
+                            ForumItemAdditional additional = new ForumItemAdditional();
+                            String fileName = UUID.randomUUID() +"&"+ file.getOriginalFilename();
+                            // 获取文件类型
+                            String fileType = file.getContentType();
+                            FileUtils.uploadFile(file.getBytes(), filePath, fileName);
+                            additional.setForum_item_id(id);
+                            additional.setFile_name(file.getOriginalFilename());
+                            additional.setFile_type(fileType);
+                            additional.setIs_delete(false);
+                            additional.setFile_url("http://101.34.208.76:80/images/"+fileName);
+                            additionalList.add(additional);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        return Result.error("发表失败");
+                    }
                 }
+
                 if(additionalList.size() > 0){
                     int t = forumService.addForumAdditional(additionalList);
                     if(t <= 0){
@@ -72,11 +87,7 @@ public class ForumController {
             }else {
                 return Result.error("发表失败");
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error("发表失败");
-        }
+
     }
 
     @GetMapping("/get/{pageNum}/{pageSize}")
@@ -108,7 +119,12 @@ public class ForumController {
             return Result.error("token无效");
         }
         ResponseDetailForumItem forumItem = forumService.getForumItemById(id);
+
         if(forumItem != null){
+
+            if(forumItem.getAuthor_avatar() == null || forumItem.getAuthor_avatar().equals("")){
+                forumItem.setAuthor_avatar("");
+            }
             return Result.success("查询成功", JSONObject.toJSONString(forumItem));
         }else{
             return Result.error("查询失败");
@@ -125,9 +141,30 @@ public class ForumController {
         forumCritic.setCritic_time(new Timestamp(System.currentTimeMillis()));
         int num = forumService.addForumCritic(forumCritic);
         if(num > 0){
+            forumService.updateReplyNum(forumCritic.getForum_item_id());
             return Result.success("评论成功","null");
         }else{
             return Result.error("评论失败");
+        }
+    }
+
+    @GetMapping("/getMyForumItem/{pageNum}/{pageSize}")
+    public Result getMyForumItem(@RequestHeader("me_token") String token, @PathVariable("pageNum") int pageNum, @PathVariable("pageSize") int pageSize){
+        Map<String, Object> map = JwtUtils.parseJwt(token);
+        if(map == null){
+            return Result.error("token无效");
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<ResponseForumItem> forumItems = forumService.getMyForumItem((Integer) map.get("id"));
+        if(forumItems != null){
+            PageInfo list = new PageInfo(forumItems);
+            JSONObject res = new JSONObject();
+            res.put("list", list.getList());
+            res.put("size", list.getSize());
+            res.put("total", list.getTotal());
+            return Result.success("查询成功", res.toString());
+        }else{
+            return Result.error("查询失败");
         }
     }
 

@@ -16,7 +16,7 @@ data class DetailForumItem (
     val time: Long,
     val reply: Int,
     val like: Int,
-    val type: Int,
     val criticList: List<ForumItemCritical>,
-    val additionalList: List<ForumItemAdditional>
+    val additionalList: List<ForumItemAdditional>,
+    val book_link: String
 )

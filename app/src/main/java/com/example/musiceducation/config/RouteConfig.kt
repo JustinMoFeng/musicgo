@@ -19,4 +19,8 @@ object RouteConfig {
     const val ROUTE_REGISTER = "register"
 
     const val ROUTE_FORUM_DETAIL = "forum_detail"
+
+    const val ROUTE_FORUM_ADD = "forum_add"
+
+    const val ROUTE_USER_INFO = "user_info"
 }

@@ -17,9 +17,8 @@ public class ResponseForumItem {
     private String author_name;
     private String author_avatar;
     private Timestamp time;
-    private int reply;
-    private int like;
-    private int type;
+    private int reply_num;
+    private int like_num;
 
     @Override
     public String toString() {
@@ -30,9 +29,8 @@ public class ResponseForumItem {
                 ", author_name='" + author_name + '\'' +
                 ", author_avatar='" + author_avatar + '\'' +
                 ", time=" + time +
-                ", reply=" + reply +
-                ", like=" + like +
-                ", type=" + type +
+                ", reply=" + reply_num +
+                ", like=" + like_num +
                 '}';
     }
 }

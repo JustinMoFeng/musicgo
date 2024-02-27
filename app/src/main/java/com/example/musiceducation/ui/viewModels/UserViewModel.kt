@@ -35,6 +35,9 @@ class UserViewModel(
     var user_avatar by mutableStateOf("")
     var user_request_info by mutableStateOf("")
 
+    var newNickname by mutableStateOf("")
+    var updateInfoState by mutableStateOf("")
+
     fun register(){
         viewModelScope.launch {
             val string = authenticateRepository.register(register_name, register_password, register_nickname)
@@ -70,6 +73,19 @@ class UserViewModel(
                 user_avatar = user.avatar_url
             }else if(user is String){
                 user_request_info = user
+            }
+        }
+    }
+
+    fun updateNickname() {
+        viewModelScope.launch {
+            val string = authenticateRepository.updateNickname(newNickname)
+            Log.d("UserViewModel", "updateNickname: $string")
+            if(string == "true"){
+                getUserInfo()
+                updateInfoState = "true"
+            }else{
+                updateInfoState = string
             }
         }
     }

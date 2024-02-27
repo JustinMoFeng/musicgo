@@ -14,11 +14,11 @@ interface AppContainer {
 
 class DefaultAppContainer : AppContainer {
     companion object{
-        private const val BASE_URL = "http://192.168.1.6:8080"
+        private const val BASE_URL = "http://101.34.208.76:80"
     }
 
     override val baseUrl: String
-        get() = "http://192.168.1.6:8080"
+        get() = "http://101.34.208.76:80"
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()

@@ -48,13 +48,7 @@ fun BookPage(
                     when(it){
                         1 -> navController.navigate(RouteConfig.ROUTE_FORUM)
                         2 -> {
-                            if(SharedPreferencesManager.getToken()==""){
-                                navController.navigate(RouteConfig.ROUTE_LOGIN)
-
-                            }else{
-                                navController.navigate(RouteConfig.ROUTE_ME)
-                            }
-
+                            navController.navigate(RouteConfig.ROUTE_ME)
                         }
                     }
                 })

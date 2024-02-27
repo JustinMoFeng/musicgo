@@ -44,9 +44,10 @@ class UserApiService(
                         Log.d("UserApiService", "getUserInfo: $res")
 
                         val result = Json.decodeFromString<FinalResult>(res ?: "")
-                        val user = Json.decodeFromString<User>(result.data.toString())
-                        Log.d("UserApiService", "getUserInfo2: $user")
+
                         if (result.code == 1) {
+                            val user = Json.decodeFromString<User>(result.data.toString())
+                            Log.d("UserApiService", "getUserInfo2: $user")
                             user
                         } else {
                             result.msg

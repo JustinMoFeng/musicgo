@@ -18,16 +18,18 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = BottomBarSelected,
     onPrimary = BottomBarUnselected,
-    secondary = PurpleGrey80,
-    tertiary = White
+    secondary = Snow,
+    tertiary = White,
+    onSecondary = backOut
 
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = BottomBarSelected,
     onPrimary = BottomBarUnselected,
-    secondary = PurpleGrey40,
-    tertiary = White
+    secondary = Snow,
+    tertiary = White,
+    onSecondary = backOut
 
 
     /* Other default colors to override

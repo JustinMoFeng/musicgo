@@ -38,12 +38,13 @@ class AuthenticateApiService (
 
         try {
             okHttpClient.newCall(request).execute().use { response ->
+                val res = response.body!!.string()
                 if (!response.isSuccessful){
-                    val errorResponse = Json.decodeFromString<ErrorResult>(response.body!!.string())
+                    val errorResponse = Json.decodeFromString<ErrorResult>(res)
                     Log.e("AuthenticateApiService", "Error: ${errorResponse.message}")
                     errorResponse.message
                 }else {
-                    val successResponse = Json.decodeFromString<FinalResult>(response.body!!.string())
+                    val successResponse = Json.decodeFromString<FinalResult>(res)
                     if(successResponse.code == 1){
                         "true"
                     }else{
@@ -87,6 +88,45 @@ class AuthenticateApiService (
                     if(successResponse.code == 1){
                         SharedPreferencesManager.saveToken(successResponse.data)
                         Log.d("AuthenticateApiService", "login: ${SharedPreferencesManager.getToken()}")
+                        "true"
+                    }else{
+                        successResponse.msg
+                    }
+                }
+            }
+
+        } catch (e: Exception) {
+            Log.e("AuthenticateApiService", "Exception: ${e.message}")
+            e.message!!
+        }
+    }
+
+    suspend fun updateNickname(newNickname: String): String = withContext(
+        Dispatchers.IO
+    ){
+        val jsonObject = JSONObject().apply {
+            put("nickname", newNickname)
+        }
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val requestBody = jsonObject.toString().toRequestBody(mediaType)
+
+        val token = SharedPreferencesManager.getToken()
+        val request = Request.Builder()
+            .url("$url/user/updateInfoWithoutAvatar")
+            .post(requestBody)
+            .addHeader("me_token", token!!)
+            .build()
+
+        try {
+            okHttpClient.newCall(request).execute().use { response ->
+                val res = response.body!!.string()
+                if (!response.isSuccessful){
+                    val errorResponse = Json.decodeFromString<ErrorResult>(res)
+                    Log.e("AuthenticateApiService", "Error: ${errorResponse.message}")
+                    errorResponse.message
+                }else {
+                    val successResponse = Json.decodeFromString<FinalResult>(res)
+                    if(successResponse.code == 1){
                         "true"
                     }else{
                         successResponse.msg

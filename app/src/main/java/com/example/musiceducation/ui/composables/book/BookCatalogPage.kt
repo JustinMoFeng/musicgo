@@ -1,5 +1,6 @@
 package com.example.musiceducation.ui.composables.book
 
+import android.service.autofill.OnClickAction
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -265,6 +266,78 @@ fun DirectoryItem(
                 directoryItem.children.forEach { child ->
                     if(child is Directory.InternelLink) {
                         DirectoryItem(child, navController, bookCatalogViewModel)
+                    }else if (child is Directory.ExternalBookLink) {
+                        ExternalBookLinkItem(child, navController)
+                    }else if (child is Directory.ExternalURILink) {
+                        ExternalURILinkItem(child, navController)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DirectoryItemFromDirectory(
+    directoryItem: Directory,
+    navController: NavController,
+) {
+    var isExpanded = remember{ mutableStateOf(false)}
+
+    Column {
+        Row(
+            modifier = Modifier
+                .clickable {
+                    isExpanded.value = !isExpanded.value
+                    if (directoryItem is Directory.InternelLink && directoryItem.children.isEmpty()) {
+                        navController.navigate(RouteConfig.ROUTE_BOOK_READ+"/${directoryItem.bookName}/${directoryItem.pageIndex}")
+                    }
+                }
+                .padding(16.dp),
+            verticalAlignment = androidx.compose.ui.Alignment.Top,
+        ) {
+            // 根据目录项的类型显示不同的图标
+            if (directoryItem is Directory.InternelLink && directoryItem.children.isNotEmpty()) {
+                Image(
+                    painter = if (isExpanded.value) painterResource(id = R.drawable.down_arrow) else painterResource(id = R.drawable.right_arrow),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .padding(end = 4.dp)
+                )
+                Text(
+                    text = directoryItem.title,
+                    modifier = Modifier
+                        .weight(1f)  // 让文字占据剩余空间
+                        .padding(horizontal = 8.dp),
+                    color = Color.Black
+                )
+            }else if (directoryItem is Directory.InternelLink){
+                Spacer(modifier = Modifier
+                    .size(20.dp)
+                    .padding(end = 4.dp))
+                Text(
+                    text = directoryItem.title,
+                    modifier = Modifier
+                        .weight(1f)  // 让文字占据剩余空间
+                        .padding(horizontal = 8.dp),
+                    color = Color.Black
+                )
+            }
+
+
+        }
+
+        if (isExpanded.value && directoryItem is Directory.InternelLink && directoryItem.children.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+            ) {
+                directoryItem.children.forEach { child ->
+                    if(child is Directory.InternelLink) {
+                        DirectoryItemFromDirectory(child, navController)
                     }else if (child is Directory.ExternalBookLink) {
                         ExternalBookLinkItem(child, navController)
                     }else if (child is Directory.ExternalURILink) {

@@ -8,6 +8,7 @@ interface UserRepository {
     suspend fun register(username: String, password: String, nickname: String):String
     suspend fun login(username: String, password: String):String
     suspend fun getUserInfo(): Any
+    suspend fun updateNickname(newNickname: String): String
 }
 class NetworkUserRepository(
     private val authenticateApiService: AuthenticateApiService,
@@ -23,6 +24,10 @@ class NetworkUserRepository(
 
     override suspend fun getUserInfo(): Any {
         return userApiService.getUserInfo()
+    }
+
+    override suspend fun updateNickname(newNickname: String): String {
+        return authenticateApiService.updateNickname(newNickname)
     }
 
 
