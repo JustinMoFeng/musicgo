@@ -23,4 +23,6 @@ object RouteConfig {
     const val ROUTE_FORUM_ADD = "forum_add"
 
     const val ROUTE_USER_INFO = "user_info"
+
+    const val ROUTE_RELATON_BOOK = "book_relation"
 }

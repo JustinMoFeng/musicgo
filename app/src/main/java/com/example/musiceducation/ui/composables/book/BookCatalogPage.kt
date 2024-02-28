@@ -1,6 +1,5 @@
 package com.example.musiceducation.ui.composables.book
 
-import android.service.autofill.OnClickAction
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,14 +13,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -35,10 +35,6 @@ import com.example.musiceducation.ui.composables.common.Directory
 import com.example.musiceducation.ui.composables.common.MusicEducationOnlyBackTopBar
 import com.example.musiceducation.ui.viewModels.BookCatalogViewModel
 import java.net.URLEncoder
-
-
-
-
 
 
 val HamletCatalog = listOf(
@@ -176,13 +172,15 @@ fun BookCatalogPageContent(
     navController: NavController,
     bookCatalogViewModel: BookCatalogViewModel
 ) {
+
+
     LazyColumn(
         modifier = modifier
             .background(Color.White)
             .fillMaxHeight()
+            .padding(horizontal = 16.dp),
     ) {
-        items(catalog.size) { index ->
-            val item = catalog[index]
+        itemsIndexed(catalog) { index, item ->
             DirectoryItem(item, navController, bookCatalogViewModel)
         }
     }
@@ -195,30 +193,41 @@ fun DirectoryItem(
     bookCatalogViewModel: BookCatalogViewModel
 ) {
     var isExpanded = remember{ mutableStateOf(false)}
-    if(directoryItem is Directory.InternelLink) {
-        Log.d("DirectoryItem", "DirectoryItem: ${bookCatalogViewModel.expandedStates[directoryItem.title]}")
-        isExpanded = remember {
-            val expanded = bookCatalogViewModel.expandedStates[directoryItem.title] ?: mutableStateOf(false)
-            expanded
-        }
-        bookCatalogViewModel.expandedStates[directoryItem.title] = isExpanded
+//    if(directoryItem is Directory.InternelLink) {
+//        Log.d("DirectoryItem", "DirectoryItem: ${bookCatalogViewModel.expandedStates[directoryItem.title]}")
+//        isExpanded = remember {
+//            val expanded = bookCatalogViewModel.expandedStates[directoryItem.title] ?: mutableStateOf(false)
+//            expanded
+//        }
+//        bookCatalogViewModel.expandedStates[directoryItem.title] = isExpanded
+//
+//
+//    }
 
-
-    }
+//    DisposableEffect(Unit) {
+//        // 在组合启动时执行的操作
+//
+//        Log.d("DirectoryItem", "DisposableEffect")
+//
+//        // 在组合被丢弃时执行的操作
+//        onDispose {
+//            Log.d("DirectoryItem", "onDispose")
+//        }
+//    }
 
     Column {
         Row(
             modifier = Modifier
                 .clickable {
                     isExpanded.value = !isExpanded.value
-                    if(directoryItem is Directory.InternelLink) {
-                        bookCatalogViewModel.expandedStates[directoryItem.title] = isExpanded
+                    if (directoryItem is Directory.InternelLink) {
+//                        bookCatalogViewModel.expandedStates[directoryItem.title] = isExpanded
 //                        Log.d("DirectoryItem", "DirectoryItem: ${bookCatalogViewModel.expandedStates[directoryItem.title]}")
                     }
                     if (directoryItem is Directory.InternelLink && directoryItem.children.isEmpty()) {
                         navController.popBackStack()
                         navController.popBackStack()
-                        navController.navigate(RouteConfig.ROUTE_BOOK_READ+"/${directoryItem.bookName}/${directoryItem.pageIndex}")
+                        navController.navigate(RouteConfig.ROUTE_BOOK_READ + "/${directoryItem.bookName}/${directoryItem.pageIndex}")
                     }
                 }
                 .padding(16.dp),
@@ -230,7 +239,7 @@ fun DirectoryItem(
                     painter = if (isExpanded.value) painterResource(id = R.drawable.down_arrow) else painterResource(id = R.drawable.right_arrow),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(15.dp)
                         .padding(end = 4.dp)
                 )
                 Text(
@@ -238,18 +247,17 @@ fun DirectoryItem(
                     modifier = Modifier
                         .weight(1f)  // 让文字占据剩余空间
                         .padding(horizontal = 8.dp),
-                    color = Color.Black
+                    color = Color.Black,
+                    style = MaterialTheme.typography.bodySmall
                 )
             }else if (directoryItem is Directory.InternelLink){
-                Spacer(modifier = Modifier
-                    .size(20.dp)
-                    .padding(end = 4.dp))
                 Text(
                     text = directoryItem.title,
                     modifier = Modifier
                         .weight(1f)  // 让文字占据剩余空间
-                        .padding(horizontal = 8.dp),
-                    color = Color.Black
+                        .padding(start = 19.dp, end = 8.dp),
+                    color = Color.Black,
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
 
@@ -284,13 +292,15 @@ fun DirectoryItemFromDirectory(
 ) {
     var isExpanded = remember{ mutableStateOf(false)}
 
+
+
     Column {
         Row(
             modifier = Modifier
                 .clickable {
                     isExpanded.value = !isExpanded.value
                     if (directoryItem is Directory.InternelLink && directoryItem.children.isEmpty()) {
-                        navController.navigate(RouteConfig.ROUTE_BOOK_READ+"/${directoryItem.bookName}/${directoryItem.pageIndex}")
+                        navController.navigate(RouteConfig.ROUTE_BOOK_READ + "/${directoryItem.bookName}/${directoryItem.pageIndex}")
                     }
                 }
                 .padding(16.dp),
@@ -310,17 +320,14 @@ fun DirectoryItemFromDirectory(
                     modifier = Modifier
                         .weight(1f)  // 让文字占据剩余空间
                         .padding(horizontal = 8.dp),
-                    color = Color.Black
+                    color = Color.Black,
                 )
             }else if (directoryItem is Directory.InternelLink){
-                Spacer(modifier = Modifier
-                    .size(20.dp)
-                    .padding(end = 4.dp))
                 Text(
                     text = directoryItem.title,
                     modifier = Modifier
                         .weight(1f)  // 让文字占据剩余空间
-                        .padding(horizontal = 8.dp),
+                        .padding(start = 28.dp, end = 8.dp),
                     color = Color.Black
                 )
             }
@@ -339,9 +346,9 @@ fun DirectoryItemFromDirectory(
                     if(child is Directory.InternelLink) {
                         DirectoryItemFromDirectory(child, navController)
                     }else if (child is Directory.ExternalBookLink) {
-                        ExternalBookLinkItem(child, navController)
+                        SecondExternalBookLinkItem(child, navController)
                     }else if (child is Directory.ExternalURILink) {
-                        ExternalURILinkItem(child, navController)
+                        SecondExternalURILinkItem(child, navController)
                     }
                 }
             }
@@ -351,12 +358,13 @@ fun DirectoryItemFromDirectory(
 
 @Composable
 fun InternelBookLinkItem(item: Directory.InternelLink) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .clickable {
-            // 打开内部书籍
-        },
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable {
+                // 打开内部书籍
+            },
         verticalAlignment = androidx.compose.ui.Alignment.Top,
     ){
         Spacer(modifier = Modifier
@@ -373,43 +381,68 @@ fun InternelBookLinkItem(item: Directory.InternelLink) {
 }
 
 @Composable
-fun ExternalBookLinkItem(
+fun SecondExternalBookLinkItem(
     item: Directory.ExternalBookLink,
     navController: NavController
 ) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp)
-        .clickable {
-            navController.navigate(RouteConfig.ROUTE_BOOK_READ+"/${item.bookId}/${item.pageIndex}")
-        },
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable {
+                navController.navigate(RouteConfig.ROUTE_BOOK_READ + "/${item.bookId}/${item.pageIndex}")
+            },
         verticalAlignment = androidx.compose.ui.Alignment.Top,
     ){
-        Spacer(modifier = Modifier
-            .size(20.dp)
-            .padding(end = 4.dp))
-
         Text(
             text = item.title,
             modifier = Modifier
-                .weight(1f),
-            color = Color.DarkGray
+                .weight(1f)
+                .padding(start = 28.dp,end = 4.dp),
+            color = Color.DarkGray,
         )
     }
 
 }
 
 @Composable
-fun ExternalURILinkItem(
+fun ExternalBookLinkItem(
+    item: Directory.ExternalBookLink,
+    navController: NavController
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable {
+                navController.navigate(RouteConfig.ROUTE_BOOK_READ + "/${item.bookId}/${item.pageIndex}")
+            },
+        verticalAlignment = androidx.compose.ui.Alignment.Top,
+    ){
+        Text(
+            text = item.title,
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 10.dp,end = 4.dp),
+            color = Color.DarkGray,
+            style = MaterialTheme.typography.bodySmall
+        )
+    }
+
+}
+
+@Composable
+fun SecondExternalURILinkItem(
     item: Directory.ExternalURILink,
     navController: NavController
 ) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .clickable {
-            val encodedURL = URLEncoder.encode(item.url, "utf-8")
-            navController.navigate(RouteConfig.COMMON_WEBVIEW+"/$encodedURL/${item.title}")
-        },
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                val encodedURL = URLEncoder.encode(item.url, "utf-8")
+                navController.navigate(RouteConfig.COMMON_WEBVIEW + "/$encodedURL/${item.title}")
+            },
         verticalAlignment = androidx.compose.ui.Alignment.Top,
     ){
         Spacer(modifier = Modifier
@@ -421,6 +454,31 @@ fun ExternalURILinkItem(
             modifier = Modifier
                 .padding(16.dp),
             color = Color.Blue
+        )
+    }
+}
+
+@Composable
+fun ExternalURILinkItem(
+    item: Directory.ExternalURILink,
+    navController: NavController
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                val encodedURL = URLEncoder.encode(item.url, "utf-8")
+                navController.navigate(RouteConfig.COMMON_WEBVIEW + "/$encodedURL/${item.title}")
+            },
+        verticalAlignment = androidx.compose.ui.Alignment.Top,
+    ){
+
+        Text(
+            text = item.title,
+            modifier = Modifier
+                .padding(16.dp),
+            color = Color.Blue,
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }

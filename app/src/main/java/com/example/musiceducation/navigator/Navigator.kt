@@ -19,6 +19,7 @@ import com.example.musiceducation.ui.composables.forum.ForumAddPage
 import com.example.musiceducation.ui.composables.forum.ForumDetailPage
 import com.example.musiceducation.ui.composables.me.MeDetailPage
 import com.example.musiceducation.ui.composables.me.MePage
+import com.example.musiceducation.ui.composables.relationBook.RelationBookPage
 import com.example.musiceducation.ui.viewModels.BookCatalogViewModel
 import com.example.musiceducation.ui.viewModels.ForumViewModel
 import com.example.musiceducation.ui.viewModels.UserViewModel
@@ -59,7 +60,7 @@ fun MusicEducationNavHost(
             val pageIndexInt = Integer.parseInt(pageIndex)
 
 
-            BookReadPage(navController = navController, bookId = bookId, pageIndex = pageIndexInt)
+            BookReadPage(navController = navController, bookId = bookId, pageIndex = pageIndexInt, bookCatalogViewModel = bookCatalogViewModel)
         }
 
         composable(RouteConfig.COMMON_WEBVIEW+"/{url}/{title}"){
@@ -97,6 +98,11 @@ fun MusicEducationNavHost(
         composable(RouteConfig.ROUTE_USER_INFO){
             MeDetailPage(viewModel = userViewModel, navController = navController)
         }
+
+        composable(RouteConfig.ROUTE_RELATON_BOOK){
+            RelationBookPage(navController = navController)
+        }
+
     }
 
 }

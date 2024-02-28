@@ -1,4 +1,4 @@
-package com.example.musiceducation.ui.composables.book
+package com.example.musiceducation.ui.composables.relationBook
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,17 +36,17 @@ import com.example.musiceducation.ui.theme.MusicEducationTheme
 import com.example.musiceducation.utils.SharedPreferencesManager
 
 @Composable
-fun BookPage(
+fun RelationBookPage(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
     MusicEducationTheme {
         Scaffold(
             bottomBar = {
-                MusicEducationBottomBar(selectedIndex = 0, onSelected = {
-                    if(it == 0) return@MusicEducationBottomBar
+                MusicEducationBottomBar(selectedIndex = 1, onSelected = {
+                    if(it == 1) return@MusicEducationBottomBar
                     when(it){
-                        1 -> navController.navigate(RouteConfig.ROUTE_RELATON_BOOK)
+                        0 -> navController.navigate(RouteConfig.ROUTE_BOOK)
                         2 -> navController.navigate(RouteConfig.ROUTE_FORUM)
                         3 -> {
                             navController.navigate(RouteConfig.ROUTE_ME)
@@ -55,10 +55,10 @@ fun BookPage(
                 })
             },
             topBar = {
-                MusicEducationBasicTopBar(title = "教材")
+                MusicEducationBasicTopBar(title = "相关书籍")
             }
         ){
-            BookPageContent(modifier = modifier
+            RelationBookPageContent(modifier = modifier
                 .fillMaxSize()
                 .padding(it)
                 .background(Color.White),
@@ -72,7 +72,7 @@ fun BookPage(
 }
 
 @Composable
-fun BookPageContent(
+fun RelationBookPageContent(
     modifier: Modifier = Modifier,
     onclick: (name: String, page: Int) -> Unit
 ) {
@@ -80,7 +80,65 @@ fun BookPageContent(
         Column(
             modifier = modifier.verticalScroll(rememberScrollState())
         ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { onclick("哈姆雷特", 0) },
+                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
 
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.book_hamlet),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .aspectRatio(0.8f)
+
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "哈姆雷特",
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black
+                    )
+                }
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { onclick("音乐理论基础", 0) },
+                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.book_music_basic),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .aspectRatio(0.8f)
+
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "音乐理论基础",
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black
+                    )
+                }
+            }
 
             Row(
                 modifier = Modifier
@@ -90,12 +148,12 @@ fun BookPageContent(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { onclick("选择必修5 音乐基础理论", 0) },
+                        .clickable { onclick("基本乐理通用教材", 0) },
                     horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
 
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.book_music_education),
+                        painter = painterResource(id = R.drawable.book_basic_music_common_education),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
@@ -121,24 +179,27 @@ fun BookPageContent(
                     horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
 
                 ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.book_basic_music_education),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .aspectRatio(0.8f)
 
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "音乐理论基础",
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black
+                    )
                 }
-
-
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun BookPageContentPreview() {
-    BookPageContent(onclick = { _, _ -> })
-}
-
-@Preview
-@Composable
-fun BookPagePreview() {
-    BookPage(navController = rememberNavController())
 }
 

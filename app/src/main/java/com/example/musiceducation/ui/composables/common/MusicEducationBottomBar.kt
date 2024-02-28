@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +29,11 @@ val bottomBarItems = listOf(
         R.drawable.bottombar_book_unselected,
         R.drawable.bottombar_book_selected,
         R.string.bottombar_book
+    ),
+    listOf(
+        R.drawable.bottombar_book_unselected,
+        R.drawable.bottombar_book_selected,
+        R.string.bottombar_relation
     ),
     listOf(
         R.drawable.bottombar_forum_unselected,
@@ -72,7 +78,7 @@ fun MusicEducationBottomBar(
                     text = item[2],
                     isSelected = index == selectedIndex,
                     onClick = { onSelected(index) },
-                    modifier = Modifier.size(52.dp)
+                    modifier = Modifier.height(52.dp).width(70.dp)
                 )
             }
         }

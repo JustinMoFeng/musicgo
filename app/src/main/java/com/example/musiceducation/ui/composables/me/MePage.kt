@@ -53,6 +53,7 @@ import com.example.musiceducation.ui.composables.common.MusicEducationBottomBar
 import com.example.musiceducation.ui.theme.MusicEducationTheme
 import com.example.musiceducation.ui.viewModels.UserViewModel
 import okhttp3.OkHttpClient
+import okhttp3.Route
 import java.time.format.TextStyle
 
 @Composable
@@ -123,11 +124,12 @@ fun MePage(
 
         Scaffold(
             bottomBar = {
-                MusicEducationBottomBar(selectedIndex = 2, onSelected = {
-                    if(it == 2) return@MusicEducationBottomBar
+                MusicEducationBottomBar(selectedIndex = 3, onSelected = {
+                    if(it == 3) return@MusicEducationBottomBar
                     when(it){
-                        0 -> navController.navigate("book")
-                        1 -> navController.navigate("forum")
+                        0 -> navController.navigate(RouteConfig.ROUTE_BOOK)
+                        1 -> navController.navigate(RouteConfig.ROUTE_RELATON_BOOK)
+                        2 -> navController.navigate(RouteConfig.ROUTE_FORUM)
                     }
                 })
             },

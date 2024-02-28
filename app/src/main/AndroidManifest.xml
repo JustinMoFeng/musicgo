@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicEducation"
         android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"

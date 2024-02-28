@@ -126,12 +126,13 @@ fun ForumPage(
 
         Scaffold (
             bottomBar = {
-                MusicEducationBottomBar(selectedIndex = 1, onSelected = {
+                MusicEducationBottomBar(selectedIndex = 2, onSelected = {
                     Log.d("ForumPage", "selectedIndex: $it")
-                    if(it == 1) return@MusicEducationBottomBar
+                    if(it == 2) return@MusicEducationBottomBar
                     when(it){
-                        0 -> navController.navigate("book")
-                        2 -> {
+                        0 -> navController.navigate(RouteConfig.ROUTE_BOOK)
+                        1 -> navController.navigate(RouteConfig.ROUTE_RELATON_BOOK)
+                        3 -> {
                             if(SharedPreferencesManager.getToken() == ""){
                                 navController.navigate(RouteConfig.ROUTE_LOGIN)
                             }else{
