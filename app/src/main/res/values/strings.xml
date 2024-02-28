@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MusicEducation</string>
+    <string name="app_name">音乐教育</string>
     <string name="bottombar_book">教材</string>
     <string name="bottombar_relation">相关书籍</string>
     <string name="bottombar_forum">论坛</string>
