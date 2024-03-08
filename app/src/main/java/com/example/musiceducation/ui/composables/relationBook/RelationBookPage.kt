@@ -64,7 +64,8 @@ fun RelationBookPage(
                 .background(Color.White),
                 onclick = { name, page ->
                     navController.navigate(RouteConfig.ROUTE_BOOK_READ+"/$name/$page")
-                }
+                },
+                navController = navController
             )
         }
     }
@@ -74,7 +75,8 @@ fun RelationBookPage(
 @Composable
 fun RelationBookPageContent(
     modifier: Modifier = Modifier,
-    onclick: (name: String, page: Int) -> Unit
+    onclick: (name: String, page: Int) -> Unit,
+    navController: NavController
 ) {
     MusicEducationTheme {
         Column(
@@ -148,7 +150,68 @@ fun RelationBookPageContent(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { onclick("基本乐理通用教材", 0) },
+                        .clickable { navController.navigate(RouteConfig.ROUTE_BOOK_STAGE+"/哈姆雷特") },
+                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.book_hamlet),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .aspectRatio(0.8f)
+
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "哈姆雷特戏剧版",
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black
+                    )
+                }
+
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { onclick("音乐理论基础", 0) },
+                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.book_basic_music_education),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .aspectRatio(0.8f)
+
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "音乐理论基础",
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ){
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { onclick("选择必修5", 0) },
                     horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
 
                 ) {
@@ -175,28 +238,11 @@ fun RelationBookPageContent(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { onclick("基本乐理教程", 0) },
+                        .clickable {  },
                     horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
 
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.book_basic_music_education),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth(0.8f)
-                            .aspectRatio(0.8f)
 
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = "音乐理论基础",
-                        modifier = Modifier.fillMaxWidth(0.8f),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.Black
-                    )
                 }
             }
         }

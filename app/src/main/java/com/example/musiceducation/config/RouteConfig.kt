@@ -25,4 +25,6 @@ object RouteConfig {
     const val ROUTE_USER_INFO = "user_info"
 
     const val ROUTE_RELATON_BOOK = "book_relation"
+
+    const val ROUTE_BOOK_STAGE = "book_stage"
 }

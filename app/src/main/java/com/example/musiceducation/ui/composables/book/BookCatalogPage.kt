@@ -34,6 +34,8 @@ import com.example.musiceducation.config.RouteConfig
 import com.example.musiceducation.ui.composables.common.Directory
 import com.example.musiceducation.ui.composables.common.MusicEducationOnlyBackTopBar
 import com.example.musiceducation.ui.viewModels.BookCatalogViewModel
+import com.example.musiceducation.utils.KeyValueFileStorage
+import com.example.musiceducation.utils.Serialize
 import java.net.URLEncoder
 
 
@@ -141,9 +143,10 @@ val MusicEducationCatalog = listOf(
 
 val bookToCatalog = mapOf(
     "哈姆雷特" to HamletCatalog,
-    "选择必修5 音乐基础理论" to MusicEducationCatalog
-
+    "选择必修5 音乐基础理论" to MusicEducationCatalog,
 )
+
+
 
 
 @Composable
@@ -153,6 +156,16 @@ fun BookCatalogPage(
     navController: NavController,
     bookCatalogViewModel: BookCatalogViewModel
 ) {
+    var catalog = emptyList<Directory>()
+    if(KeyValueFileStorage.loadValueForKey(navController.context, bookName) == null) {
+        val bookCatalog = bookToCatalog[bookName] ?: emptyList()
+        catalog = bookCatalog
+        KeyValueFileStorage.saveKeyValue(navController.context, bookName, Serialize.serializeList(bookCatalog))
+    }else {
+        val bookCatalog = KeyValueFileStorage.loadValueForKey(navController.context, bookName)
+        catalog = Serialize.deserializeList<Directory>(bookCatalog!!)
+
+    }
     Scaffold(
         topBar = {
             MusicEducationOnlyBackTopBar(title = bookName, onBack = {
@@ -160,7 +173,7 @@ fun BookCatalogPage(
             })
         }
     ) {
-        BookCatalogPageContent(catalog = bookToCatalog[bookName] ?: emptyList(), modifier = Modifier.padding(it), navController = navController, bookCatalogViewModel = bookCatalogViewModel)
+        BookCatalogPageContent(catalog = catalog, modifier = Modifier.padding(it), navController = navController, bookCatalogViewModel = bookCatalogViewModel)
     }
 }
 

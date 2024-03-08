@@ -18,9 +18,17 @@ import com.example.musiceducation.entity.DetailForumItem
 import com.example.musiceducation.entity.FileInfo
 import com.example.musiceducation.entity.ForumItem
 import com.example.musiceducation.entity.ResponseForumItem
+import com.example.musiceducation.ui.composables.book.bookToCatalog
 import com.example.musiceducation.ui.composables.common.Directory
+import com.example.musiceducation.ui.composables.common.DirectoryList
 import com.example.musiceducation.ui.composables.forum.bookName
+import com.example.musiceducation.utils.KeyValueFileStorage
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 
 class ForumViewModel(
     private val forumRepository: ForumRepository
@@ -53,6 +61,8 @@ class ForumViewModel(
     var forumCriticInput by mutableStateOf("")
 
     var criticBackInfo by mutableStateOf("")
+
+    var addCatalogResult by mutableStateOf("")
 
 
 
@@ -175,6 +185,47 @@ class ForumViewModel(
             Log.d("ForumViewModel", "sendForumCritic: $forumResult")
             criticBackInfo = forumResult
         }
+    }
+
+    val json = Json {
+        serializersModule = SerializersModule {
+            polymorphic(Directory::class) {
+                subclass(Directory.InternelLink::class)
+                subclass(Directory.ExternalURILink::class)
+                subclass(Directory.ExternalBookLink::class)
+            }
+        }
+        classDiscriminator = "type"
+    }
+
+    fun addToCatalog(it: Directory) {
+        // 获取原文书籍
+        if(it is Directory.InternelLink){
+            val bookName = it.bookName
+            if(bookName=="未知书籍"||bookName=="请选择书籍"){
+                addCatalogResult = "false"
+                return
+            }
+            val bookResult = KeyValueFileStorage.loadValueForKey(context = MusicEducationApplication.instance, key = bookName)
+            if(bookResult==null){
+                if(bookName=="哈姆雷特"||bookName=="选择必修5 音乐基础理论") {
+                    val bookFinal = bookToCatalog[bookName]?.plus(it)
+                    val bookStr = json.encodeToString(DirectoryList(bookFinal!!))
+                    KeyValueFileStorage.saveKeyValue(context = MusicEducationApplication.instance, key = bookName, value = bookStr)
+                }else{
+                    val bookFinal = emptyList<Directory>().plus(it)
+                    val bookStr = json.encodeToString(DirectoryList(bookFinal))
+                    KeyValueFileStorage.saveKeyValue(context = MusicEducationApplication.instance, key = bookName, value = bookStr)
+                }
+            }else{
+                val bookList = json.decodeFromString(DirectoryList.serializer(), bookResult).directories.toMutableList()
+                bookList.add(it)
+                val bookStr = json.encodeToString(DirectoryList(bookList))
+                KeyValueFileStorage.saveKeyValue(context = MusicEducationApplication.instance, key = bookName, value = bookStr)
+            }
+            addCatalogResult = "true"
+        }
+
     }
 
 

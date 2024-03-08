@@ -71,11 +71,15 @@ import com.example.musiceducation.entity.ForumItemCritical
 import com.example.musiceducation.network.ForumApiService
 import com.example.musiceducation.ui.composables.book.DirectoryItemFromDirectory
 import com.example.musiceducation.ui.composables.common.Directory
+import com.example.musiceducation.ui.composables.common.DirectoryList
 import com.example.musiceducation.ui.composables.common.MusicEducationOnlyBackTopBar
 import com.example.musiceducation.ui.theme.MusicEducationTheme
 import com.example.musiceducation.ui.viewModels.ForumViewModel
 import com.example.musiceducation.utils.Time
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import okhttp3.OkHttpClient
 import java.net.URLEncoder
 
@@ -134,7 +138,58 @@ fun ForumDetailPageContent(
     forumViewModel: ForumViewModel = ForumViewModel(NetworkForumRepository(ForumApiService("", OkHttpClient())))
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+
     MusicEducationTheme {
+        if(forumViewModel.addCatalogResult!=""){
+            AlertDialog(
+                onDismissRequest = { forumViewModel.criticBackInfo = "" },
+                title = {
+                    if(forumViewModel.addCatalogResult == "true"){
+                        Text(
+                            text = "添加成功通知",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Black
+                        )
+                    }else {
+                        Text(
+                            text = "添加失败通知",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Black
+                        )
+                    }
+
+                },
+                containerColor = Color.LightGray,
+                text = {
+                    if(forumViewModel.addCatalogResult == "true") {
+                        Text(
+                            text = "添加成功，可前往对应书籍界面查看",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Black
+                        )
+                    }else{
+                        Text(
+                            text = "添加失败，请再次尝试",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Black
+                        )
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            forumViewModel.addCatalogResult = ""
+                        }
+                    ) {
+                        Text(
+                            text = "确认",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.White
+                        )
+                    }
+                }
+            )
+        }
         Column(
             modifier = modifier.fillMaxWidth()
         ) {
@@ -207,10 +262,19 @@ fun ForumDetailPageContent(
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
-
+                val json = Json {
+                    serializersModule = SerializersModule {
+                        polymorphic(Directory::class) {
+                            subclass(Directory.InternelLink::class)
+                            subclass(Directory.ExternalURILink::class)
+                            subclass(Directory.ExternalBookLink::class)
+                        }
+                    }
+                    classDiscriminator = "type"
+                }
                 // 书籍链接部分
                 if (forumDetailItem.book_link != "") {
-                    val book_link = Json.decodeFromString<List<Directory>>(forumDetailItem.book_link)
+                    val book_link = json.decodeFromString<DirectoryList>(forumDetailItem.book_link).directories
                     Text(
                         text = "书籍链接",
                         modifier = Modifier
@@ -226,6 +290,10 @@ fun ForumDetailPageContent(
                             directoryItem = it,
                             navController = navController
                         )
+
+                        Button(onClick = { forumViewModel.addToCatalog(it) }) {
+                            Text(text = "将目录加入书籍",color = Color.White)
+                        }
                     }
                 }
 

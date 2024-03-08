@@ -10,6 +10,7 @@ import com.example.musiceducation.entity.ForumItem
 import com.example.musiceducation.entity.ResponseForumItem
 import com.example.musiceducation.entity.User
 import com.example.musiceducation.ui.composables.common.Directory
+import com.example.musiceducation.ui.composables.common.DirectoryList
 import com.example.musiceducation.utils.Md5
 import com.example.musiceducation.utils.SharedPreferencesManager
 import com.example.musiceducation.utils.Uri2Path
@@ -17,6 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -117,7 +121,17 @@ class ForumApiService(
     suspend fun addForumItem(newForumTitle: String, newBasicForumContent: String, newForumFileList: List<FileInfo>, newForumContentList: List<Directory>): String = withContext(
         Dispatchers.IO
     ){
-
+            val json = Json {
+                serializersModule = SerializersModule {
+                    polymorphic(Directory::class) {
+                        subclass(Directory.InternelLink::class)
+                        subclass(Directory.ExternalURILink::class)
+                        subclass(Directory.ExternalBookLink::class)
+                    }
+                }
+                classDiscriminator = "type"
+            }
+            val directoryList = DirectoryList(newForumContentList)
             val client = OkHttpClient()
 
             // 构建 Multipart 请求体
@@ -129,7 +143,7 @@ class ForumApiService(
             JSONObject().apply {
                 put("title", newForumTitle)
                 put("content", newBasicForumContent)
-                put("book_link", Json.encodeToString(newForumContentList))
+                put("book_link", json.encodeToString(directoryList))
             }.let {
                 requestBody.addFormDataPart("forumBody", it.toString())
             }

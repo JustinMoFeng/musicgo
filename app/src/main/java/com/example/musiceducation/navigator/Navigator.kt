@@ -19,6 +19,7 @@ import com.example.musiceducation.ui.composables.forum.ForumAddPage
 import com.example.musiceducation.ui.composables.forum.ForumDetailPage
 import com.example.musiceducation.ui.composables.me.MeDetailPage
 import com.example.musiceducation.ui.composables.me.MePage
+import com.example.musiceducation.ui.composables.relationBook.BookStagePage
 import com.example.musiceducation.ui.composables.relationBook.RelationBookPage
 import com.example.musiceducation.ui.viewModels.BookCatalogViewModel
 import com.example.musiceducation.ui.viewModels.ForumViewModel
@@ -101,6 +102,11 @@ fun MusicEducationNavHost(
 
         composable(RouteConfig.ROUTE_RELATON_BOOK){
             RelationBookPage(navController = navController)
+        }
+
+        composable(RouteConfig.ROUTE_BOOK_STAGE+"/{title}"){
+            val title = it.arguments?.getString("title") ?: ""
+            BookStagePage(navController = navController, title = title)
         }
 
     }

@@ -53,7 +53,16 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.unit.dp
+import com.example.musiceducation.ui.composables.common.Directory
+import com.example.musiceducation.ui.composables.common.DirectoryList
 import com.example.musiceducation.ui.viewModels.BookCatalogViewModel
+import com.example.musiceducation.utils.KeyValueFileStorage
+import com.example.musiceducation.utils.Serialize
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 
 val bookIdToName = mapOf(
     "哈姆雷特" to "hamlet.pdf",
@@ -62,8 +71,6 @@ val bookIdToName = mapOf(
     "基本乐理教程" to "basic_music_education.pdf",
     "基本乐理通用教材" to "basic_music_common_education.pdf",
 )
-
-
 
 @Composable
 fun BookReadPage(
@@ -77,6 +84,20 @@ fun BookReadPage(
     var showSidebar by remember { mutableStateOf(false) }
     //初始化为空位图
     var bitmap by remember { mutableStateOf<Bitmap?>(getBitMapFromBook(navController.context, bookIdToName[bookId] ?: "", pageIdx)) }
+    var catalog = emptyList<Directory>()
+
+    val json = Json {
+        serializersModule = SerializersModule {
+            polymorphic(Directory::class) {
+                subclass(Directory.InternelLink::class)
+                subclass(Directory.ExternalURILink::class)
+                subclass(Directory.ExternalBookLink::class)
+            }
+        }
+        classDiscriminator = "type"
+    }
+
+
     MusicEducationTheme {
         Scaffold(
             topBar = {
@@ -86,6 +107,22 @@ fun BookReadPage(
                         navController.popBackStack()
                     },
                     onCatalog = {
+//                        KeyValueFileStorage.clearFile(navController.context)
+                        Log.d("BookReadPage", "BookReadPage: ${KeyValueFileStorage.loadValueForKey(navController.context, bookId)}")
+                        if(KeyValueFileStorage.loadValueForKey(navController.context, bookId) == null) {
+                            val bookCatalog = bookToCatalog[bookId] ?: emptyList()
+                            catalog = bookCatalog
+                            val bookCatalogJson = json.encodeToString(DirectoryList(bookCatalog))
+//                            val bookCatalogJson = json.encodeToString(bookCatalog)
+                            Log.d("BookReadPage", "BookReadPage: ${bookCatalogJson}")
+                            KeyValueFileStorage.saveKeyValue(navController.context, bookId, bookCatalogJson)
+                        }else {
+                            val bookCatalog = KeyValueFileStorage.loadValueForKey(navController.context, bookId)
+                            val finalCatalog:DirectoryList = json.decodeFromString(DirectoryList.serializer(), bookCatalog!!)
+                            catalog = finalCatalog.directories
+                            Log.d("BookReadPage", "BookReadPage: $catalog")
+
+                        }
                         showSidebar = !showSidebar
                     }
                 )
@@ -143,7 +180,7 @@ fun BookReadPage(
                     ) {
                         // 在这里放置目录页面的内容
                         BookCatalogPageContent(
-                            catalog = bookToCatalog[bookId] ?: emptyList(),
+                            catalog = catalog,
                             modifier = Modifier.fillMaxSize(),
                             navController = navController,
                             bookCatalogViewModel = bookCatalogViewModel

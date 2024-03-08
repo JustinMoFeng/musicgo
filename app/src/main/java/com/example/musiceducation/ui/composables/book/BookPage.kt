@@ -117,7 +117,7 @@ fun BookPageContent(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { onclick("基本乐理教程", 0) },
+                        .clickable { },
                     horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
 
                 ) {
