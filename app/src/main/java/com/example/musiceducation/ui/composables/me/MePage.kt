@@ -245,37 +245,37 @@ fun MePageBodyPart(
                 .background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxWidth(0.9f)
-//                    .height(50.dp)
-//            ) {
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(48.dp),
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Spacer(modifier = Modifier.width(4.dp))
-//
-//                    Text(
-//                        text = "我的帖子",
-//                        style = MaterialTheme.typography.titleMedium,
-//                        color = Color.Black,
-//                    )
-//
-//                    Spacer(modifier = Modifier.weight(1f))
-//
-//                    Image(
-//                        painter = painterResource(id = R.drawable.right_arrow),
-//                        contentDescription = null,
-//                        modifier = Modifier
-//                            .size(15.dp)
-//                            .clip(shape = CircleShape)
-//
-//                    )
-//                    Spacer(modifier = Modifier.width(4.dp))
-//                }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(50.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Text(
+                        text = "扩展工具",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black,
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.right_arrow),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(15.dp)
+                            .clip(shape = CircleShape)
+
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
 
                 Spacer(modifier = Modifier
                     .height(1.dp)
@@ -283,10 +283,50 @@ fun MePageBodyPart(
                     .fillMaxWidth()
                 )
 
-//            }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(50.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Text(
+                        text = "相关链接",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black,
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.right_arrow),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(15.dp)
+                            .clip(shape = CircleShape)
+
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+
+                Spacer(modifier = Modifier
+                    .height(1.dp)
+                    .background(Color.Gray)
+                    .fillMaxWidth()
+                )
+
+            }
 
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Box(modifier = Modifier
                 .height(40.dp)
