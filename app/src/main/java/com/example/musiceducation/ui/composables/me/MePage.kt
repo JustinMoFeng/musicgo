@@ -146,7 +146,7 @@ fun MePage(
                     .padding(it)
             ) {
                 MePageUserPart(userViewModel = userViewModel, navController = navController)
-                MePageBodyPart(userViewModel = userViewModel)
+                MePageBodyPart(userViewModel = userViewModel, navController = navController)
             }
         }
     }
@@ -232,7 +232,8 @@ fun MePageUserPart(
 @Composable
 fun MePageBodyPart(
     modifier: Modifier = Modifier,
-    userViewModel: UserViewModel = UserViewModel(NetworkUserRepository(AuthenticateApiService("", OkHttpClient()), UserApiService("", OkHttpClient())))
+    userViewModel: UserViewModel = UserViewModel(NetworkUserRepository(AuthenticateApiService("", OkHttpClient()), UserApiService("", OkHttpClient()))),
+    navController: NavController
 ) {
 
     var logOutConfirm by remember { mutableStateOf(false) }
@@ -248,12 +249,16 @@ fun MePageBodyPart(
             Column(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .height(50.dp)
+                    .height(60.dp)
+
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .height(59.dp)
+                        .clickable {
+                                   navController.navigate(RouteConfig.ROUTE_ME_TOOL)
+                        },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Spacer(modifier = Modifier.width(4.dp))
@@ -288,12 +293,15 @@ fun MePageBodyPart(
             Column(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .height(50.dp)
+                    .height(60.dp)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .height(59.dp)
+                        .clickable {
+                            navController.navigate(RouteConfig.ROUTE_ME_TOOL)
+                        },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Spacer(modifier = Modifier.width(4.dp))
@@ -414,7 +422,7 @@ fun MePageUserPartPreview() {
 @Preview
 @Composable
 fun MePageBodyPartPreview() {
-    MePageBodyPart()
+    MePageBodyPart(navController = rememberNavController())
 }
 
 @Preview
