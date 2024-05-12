@@ -1,9 +1,11 @@
 package com.example.musiceducation.ui.composables.common
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -41,11 +43,13 @@ fun WebViewPage(
 
 }
 
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewPageContent(
     modifier: Modifier = Modifier,
     url: String
 ) {
+    Log.d("WebViewPageContent", "url: $url")
     MusicEducationTheme {
         AndroidView(
             factory = { context ->
@@ -55,6 +59,7 @@ fun WebViewPageContent(
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
                     settings.javaScriptEnabled = true
+                    settings.domStorageEnabled = true
                     webViewClient = CustomWebViewClient(context)
                     loadUrl(url)
                 }
@@ -70,6 +75,7 @@ fun WebViewPageContent(
 }
 
 class CustomWebViewClient(private val context: Context) : WebViewClient() {
+
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
         val url = request?.url?.toString()
 

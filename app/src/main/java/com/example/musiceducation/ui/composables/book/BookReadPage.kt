@@ -98,7 +98,7 @@ fun BookReadPage(
         }
         classDiscriminator = "type"
     }
-
+    Log.d("BookReadPage", "BookReadPage: $bookId")
 
     MusicEducationTheme {
         Scaffold(
@@ -110,19 +110,19 @@ fun BookReadPage(
                     },
                     onCatalog = {
 //                        KeyValueFileStorage.clearFile(navController.context)
-                        Log.d("BookReadPage", "BookReadPage: ${KeyValueFileStorage.loadValueForKey(navController.context, bookId)}")
-                        if(KeyValueFileStorage.loadValueForKey(navController.context, bookId) == null) {
+                        Log.d("BookReadPage", "BookReadPage0: ${KeyValueFileStorage.loadValueForKey(navController.context, bookId)}")
+                        if(KeyValueFileStorage.loadValueForKey(navController.context, bookId) == null || KeyValueFileStorage.loadValueForKey(navController.context, bookId).equals("{\"directories\":[]}")  ) {
                             val bookCatalog = bookToCatalog[bookId] ?: emptyList()
                             catalog = bookCatalog
                             val bookCatalogJson = json.encodeToString(DirectoryList(bookCatalog))
 //                            val bookCatalogJson = json.encodeToString(bookCatalog)
-                            Log.d("BookReadPage", "BookReadPage: ${bookCatalogJson}")
+                            Log.d("BookReadPage", "BookReadPage1: ${bookCatalogJson}")
                             KeyValueFileStorage.saveKeyValue(navController.context, bookId, bookCatalogJson)
                         }else {
                             val bookCatalog = KeyValueFileStorage.loadValueForKey(navController.context, bookId)
                             val finalCatalog:DirectoryList = json.decodeFromString(DirectoryList.serializer(), bookCatalog!!)
                             catalog = finalCatalog.directories
-                            Log.d("BookReadPage", "BookReadPage: $catalog")
+                            Log.d("BookReadPage", "BookReadPage2: $catalog")
 
                         }
                         showSidebar = !showSidebar

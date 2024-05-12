@@ -141,9 +141,16 @@ val MusicEducationCatalog = listOf(
     Directory.InternelLink("第五单元 记号、术语与译谱移调","选择必修5 音乐基础理论",  66),
 )
 
+val MusicAppreciationCatalog = listOf(
+    Directory.InternelLink("作品鉴赏：《秦王点兵》", "必修1 音乐鉴赏", 13, listOf(
+        Directory.ExternalURILink("第一节 节奏——永恒的人生命律动①", "https://basic.sh.smartedu.cn/airclassroom/airClassroomTaskDetail?resource=1694227345583505408&courseId=1554711046177116002"),
+    ))
+)
+
 val bookToCatalog = mapOf(
     "哈姆雷特" to HamletCatalog,
     "选择必修5 音乐基础理论" to MusicEducationCatalog,
+    "必修1 音乐鉴赏" to MusicAppreciationCatalog
 )
 
 
@@ -157,6 +164,7 @@ fun BookCatalogPage(
     bookCatalogViewModel: BookCatalogViewModel
 ) {
     var catalog = emptyList<Directory>()
+    Log.d("BookCatalogPage", "BookCatalogPage: $bookName")
     if(KeyValueFileStorage.loadValueForKey(navController.context, bookName) == null) {
         val bookCatalog = bookToCatalog[bookName] ?: emptyList()
         catalog = bookCatalog
