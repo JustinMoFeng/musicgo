@@ -211,7 +211,7 @@ fun RelationBookPageContent(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { onclick("选择必修5", 0) },
+                        .clickable { onclick("基本乐理通用教材", 0) },
                     horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
 
                 ) {
@@ -227,7 +227,7 @@ fun RelationBookPageContent(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "选择必修5",
+                        text = "基本乐理通用教材",
                         modifier = Modifier.fillMaxWidth(0.8f),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleMedium,

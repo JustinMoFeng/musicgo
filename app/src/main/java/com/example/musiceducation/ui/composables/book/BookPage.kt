@@ -81,6 +81,66 @@ fun BookPageContent(
             modifier = modifier.verticalScroll(rememberScrollState())
         ) {
 
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ){
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { onclick("必修1 音乐鉴赏", 0) },
+                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.book_music_appreciation),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .aspectRatio(0.8f)
+
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "必修1 音乐鉴赏",
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black
+                    )
+                }
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { onclick("必修2 歌唱", 0) },
+                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.book_singing),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .aspectRatio(0.8f)
+
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "必修2 歌唱",
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black
+                    )
+                }
+            }
+
 
             Row(
                 modifier = Modifier

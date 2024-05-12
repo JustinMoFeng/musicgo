@@ -70,6 +70,8 @@ val bookIdToName = mapOf(
     "选择必修5 音乐基础理论" to "music_education.pdf",
     "基本乐理教程" to "basic_music_education.pdf",
     "基本乐理通用教材" to "basic_music_common_education.pdf",
+    "必修1 音乐鉴赏" to "music_appreciation.pdf",
+    "必修2 歌唱" to "singing.pdf",
 )
 
 @Composable
