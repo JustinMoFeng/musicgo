@@ -1,5 +1,6 @@
 package com.example.musiceducation.ui.composables.book
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
@@ -74,6 +75,7 @@ val bookIdToName = mapOf(
     "必修2 歌唱" to "singing.pdf",
 )
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun BookReadPage(
     modifier: Modifier = Modifier,
@@ -106,6 +108,8 @@ fun BookReadPage(
                 MusicEducationBookReaderTopBar(
                     title = bookId,
                     onBack = {
+                        Log.d("BookReadPage", "onBack")
+                        Log.d("BookReadPage", "Backstack: ${navController.currentBackStack.value}")
                         navController.popBackStack()
                     },
                     onCatalog = {
@@ -113,8 +117,9 @@ fun BookReadPage(
                         Log.d("BookReadPage", "BookReadPage0: ${KeyValueFileStorage.loadValueForKey(navController.context, bookId)}")
                         if(KeyValueFileStorage.loadValueForKey(navController.context, bookId) == null || KeyValueFileStorage.loadValueForKey(navController.context, bookId).equals("{\"directories\":[]}")  ) {
                             val bookCatalog = bookToCatalog[bookId] ?: emptyList()
-                            catalog = bookCatalog
+
                             val bookCatalogJson = json.encodeToString(DirectoryList(bookCatalog))
+                            catalog = bookCatalog
 //                            val bookCatalogJson = json.encodeToString(bookCatalog)
                             Log.d("BookReadPage", "BookReadPage1: ${bookCatalogJson}")
                             KeyValueFileStorage.saveKeyValue(navController.context, bookId, bookCatalogJson)
@@ -125,6 +130,7 @@ fun BookReadPage(
                             Log.d("BookReadPage", "BookReadPage2: $catalog")
 
                         }
+                        if(catalog.isEmpty()) catalog = KeyValueFileStorage.loadValueForKey(navController.context, bookId)?.let {json.decodeFromString(DirectoryList.serializer(), it)}?.directories ?: emptyList()
                         showSidebar = !showSidebar
                     }
                 )
@@ -181,6 +187,7 @@ fun BookReadPage(
                             .background(Color.Gray)
                     ) {
                         // 在这里放置目录页面的内容
+                        Log.d("BookReadPage", "BookReadPage3: $catalog")
                         BookCatalogPageContent(
                             catalog = catalog,
                             modifier = Modifier.fillMaxSize(),

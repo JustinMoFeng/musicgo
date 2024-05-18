@@ -300,7 +300,7 @@ fun MePageBodyPart(
                         .fillMaxWidth()
                         .height(59.dp)
                         .clickable {
-                            navController.navigate(RouteConfig.ROUTE_ME_TOOL)
+                            navController.navigate(RouteConfig.ROUTE_ME_LINK)
                         },
                     verticalAlignment = Alignment.CenterVertically
                 ) {

@@ -142,9 +142,64 @@ val MusicEducationCatalog = listOf(
 )
 
 val MusicAppreciationCatalog = listOf(
-    Directory.InternelLink("作品鉴赏：《秦王点兵》", "必修1 音乐鉴赏", 13, listOf(
+    Directory.InternelLink("节奏①", "必修1 音乐鉴赏", 13, listOf(
+        Directory.InternelLink("原文","必修1 音乐鉴赏", 13),
         Directory.ExternalURILink("第一节 节奏——永恒的人生命律动①", "https://basic.sh.smartedu.cn/airclassroom/airClassroomTaskDetail?resource=1694227345583505408&courseId=1554711046177116002"),
+    )),
+    Directory.InternelLink("节奏②", "必修1 音乐鉴赏", 15, listOf(
+        Directory.InternelLink("作品鉴赏：《春之祭》","必修1 音乐鉴赏", 15),
+        Directory.InternelLink("作品鉴赏：《破铜烂铁》","必修1 音乐鉴赏", 19),
+        Directory.InternelLink("实践活动","必修1 音乐鉴赏", 20),
+        Directory.ExternalURILink("第一节 节奏——永恒的人生命律动②", "https://basic.sh.smartedu.cn/airclassroom/airClassroomTaskDetail?resource=1694227352705433600&courseId=1554711046177116002"),
+    )),
+    Directory.InternelLink("旋律①", "必修1 音乐鉴赏", 22, listOf(
+        Directory.InternelLink("作品鉴赏:《西风的话》","必修1 音乐鉴赏", 22),
+        Directory.InternelLink("作品鉴赏：《幻想即兴曲》","必修1 音乐鉴赏", 23),
+        Directory.InternelLink("实知识百科","必修1 音乐鉴赏", 25),
+        Directory.ExternalURILink("第二节 旋律——诗意与激情的倾诉①", "https://basic.sh.smartedu.cn/airclassroom/airClassroomTaskDetail?resource=1694227361878376448&courseId=1554711046177116002"),
+    )),
+    Directory.InternelLink("旋律②", "必修1 音乐鉴赏", 26, listOf(
+        Directory.InternelLink("作品鉴赏:《采茶舞曲》","必修1 音乐鉴赏", 26),
+        Directory.InternelLink("作品鉴赏：《蓝花花》","必修1 音乐鉴赏", 27),
+        Directory.InternelLink("作品鉴赏：《老黑奴》","必修1 音乐鉴赏", 28),
+        Directory.InternelLink("作品鉴赏：《枉凝眉》","必修1 音乐鉴赏", 29),
+        Directory.InternelLink("实践活动：《赶牲灵》","必修1 音乐鉴赏", 30),
+        Directory.ExternalURILink("第二节 旋律——诗意与激情的倾诉②", "https://basic.sh.smartedu.cn/airclassroom/airClassroomTaskDetail?resource=1694227369012887552&courseId=1554711046177116002"),
+    )),
+    Directory.InternelLink("音色①", "必修1 音乐鉴赏", 35, listOf(
+        Directory.InternelLink("作品鉴赏：《百鸟朝凤》","必修1 音乐鉴赏", 35),
+        Directory.InternelLink("知识百科：音色 唢呐","必修1 音乐鉴赏", 37),
+        Directory.InternelLink("作品鉴赏：《空山鸟语》","必修1 音乐鉴赏", 38),
+        Directory.InternelLink("人物介绍：刘天华","必修1 音乐鉴赏", 39),
+        Directory.InternelLink("知识百科： 二胡","必修1 音乐鉴赏", 39),
+        Directory.ExternalURILink("音色——五彩斑斓的调色板①", "https://basic.sh.smartedu.cn/airclassroom/airClassroomTaskDetail?resource=1694227374578728960&courseId=1554711046177116002"),
+    )),
+    Directory.InternelLink("音色②", "必修1 音乐鉴赏", 40, listOf(
+        Directory.InternelLink("作品鉴赏：《阳关三叠》","必修1 音乐鉴赏", 40),
+        Directory.InternelLink("知识百科： 古琴","必修1 音乐鉴赏", 41),
+        Directory.InternelLink("作品鉴赏：《查拉图斯特拉如是说》","必修1 音乐鉴赏", 32),
+        Directory.InternelLink("知识百科：铜管乐器","必修1 音乐鉴赏", 43),
+        Directory.InternelLink("人物介绍：查理·施特劳斯","必修1 音乐鉴赏", 43),
+        Directory.ExternalURILink("音色——五彩斑斓的调色板②", "https://basic.sh.smartedu.cn/airclassroom/airClassroomTaskDetail?resource=1694227380773715968&courseId=1554711046177116002"),
+    )),
+    Directory.InternelLink("音色②", "必修1 音乐鉴赏", 46, listOf(
+        Directory.InternelLink("作品鉴赏：《小河流淌》","必修1 音乐鉴赏", 46),
+        Directory.InternelLink("知识百科： 调式","必修1 音乐鉴赏", 47),
+        Directory.InternelLink("作品鉴赏：《祖国进行曲》","必修1 音乐鉴赏", 47),
+        Directory.InternelLink("知识百科：关系大小调与同名大小调","必修1 音乐鉴赏", 48),
+        Directory.InternelLink("实践活动：1.调式辨析","必修1 音乐鉴赏", 50),
+        Directory.InternelLink("拓展思考","必修1 音乐鉴赏", 50),
+        Directory.ExternalURILink("艺术殿堂的乐音阶梯", "https://basic.sh.smartedu.cn/airclassroom/airClassroomTaskDetail?resource=1694227381121843200&courseId=1554711046177116002"),
     ))
+)
+
+
+val SingCatalog = listOf(
+    Directory.InternelLink("第一单元 乐音与记谱","必修2 歌唱",12),
+    Directory.InternelLink("第二单元 节奏与节拍","必修2 歌唱",  26),
+    Directory.InternelLink("第三单元 音程与和弦","必修2 歌唱",  40),
+    Directory.InternelLink("第四单元 调试、音阶与调关系","必修2 歌唱",  54),
+    Directory.InternelLink("第五单元 记号、术语与译谱移调","必修2 歌唱",  66),
 )
 
 val bookToCatalog = mapOf(
@@ -247,7 +302,6 @@ fun DirectoryItem(
                     }
                     if (directoryItem is Directory.InternelLink && directoryItem.children.isEmpty()) {
                         navController.popBackStack()
-                        navController.popBackStack()
                         navController.navigate(RouteConfig.ROUTE_BOOK_READ + "/${directoryItem.bookName}/${directoryItem.pageIndex}")
                     }
                 }
@@ -321,6 +375,7 @@ fun DirectoryItemFromDirectory(
                 .clickable {
                     isExpanded.value = !isExpanded.value
                     if (directoryItem is Directory.InternelLink && directoryItem.children.isEmpty()) {
+                        Log.d("DirectoryItemFromDirectory", "DirectoryItemFromDirectory: ${directoryItem.bookName} ${directoryItem.pageIndex}")
                         navController.navigate(RouteConfig.ROUTE_BOOK_READ + "/${directoryItem.bookName}/${directoryItem.pageIndex}")
                     }
                 }

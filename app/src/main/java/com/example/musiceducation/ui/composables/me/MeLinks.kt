@@ -46,7 +46,7 @@ fun MeLinkPage(
     MusicEducationTheme {
         Scaffold(
             topBar = {
-                MusicEducationOnlyBackTopBar(title = "工具", onBack = {
+                MusicEducationOnlyBackTopBar(title = "链接", onBack = {
                     navController.popBackStack()
                 })
             }
